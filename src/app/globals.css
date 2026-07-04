@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Muebles Venechi — sistema de marca                                  */
+/* Madera cálida + verde bosque del sur de Chile (Villarrica/Pucón).   */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --background: #faf6f0; /* crema cálida */
+  --surface: #ffffff;
+  --surface-muted: #f2ebe0;
+  --foreground: #241f1b; /* café casi negro */
+  --muted: #6b5f52;
+
+  --pine: #1f3d2f; /* verde bosque — marca */
+  --pine-600: #2c5340;
+  --pine-100: #e4ede7;
+
+  --oak: #c8863f; /* roble/ámbar — acento */
+  --oak-600: #a86d2c;
+  --oak-100: #f6e9d6;
+
+  --border: #e5dccd;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+
+  --color-pine: var(--pine);
+  --color-pine-600: var(--pine-600);
+  --color-pine-100: var(--pine-100);
+
+  --color-oak: var(--oak);
+  --color-oak-600: var(--oak-600);
+  --color-oak-100: var(--oak-100);
+
+  --color-border: var(--border);
+
+  --font-sans: var(--font-sans);
+  --radius-xl: 1.25rem;
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+/* Utilidades de composición reutilizadas en toda la web */
+.container-page {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--oak);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.btn-primary:hover {
+  background: var(--oak-600);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--pine);
+  font-weight: 600;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+.btn-ghost:hover {
+  background: var(--surface-muted);
+}
+
+.input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  color: var(--foreground);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input:focus {
+  border-color: var(--oak);
+  box-shadow: 0 0 0 3px var(--oak-100);
+}
+.input::placeholder {
+  color: #a99e8e;
+}

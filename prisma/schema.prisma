@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Cotizante capturado por el configurador de cocinas.
+// La captura es progresiva: el Lead se crea al ingresar los datos de contacto
+// y guarda un snapshot de la configuración cotizada.
+model Lead {
+  id     String @id @default(cuid())
+  name   String
+  phone  String
+  email  String?
+  comuna String?
+
+  projectType String? // "nueva" | "remodelacion"
+  timeframe   String?
+
+  // Snapshot de la configuración cotizada
+  layout      String?
+  baseMeters  Float?
+  wallMeters  Float?
+  countertop  String?
+  front       String?
+  extras      String[] @default([])
+  priceFrom   Int?
+  priceTo     Int?
+
+  source         String  @default("configurador")
+  kommoLeadId    Int?
+  kommoContactId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+}
