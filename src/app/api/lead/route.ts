@@ -71,6 +71,7 @@ export async function POST(request: Request) {
           extras: data.extras ?? [],
           priceFrom: priceFrom ?? undefined,
           priceTo: priceTo ?? undefined,
+          source: data.source ?? "configurador",
         },
       });
       persisted = true;
@@ -84,7 +85,7 @@ export async function POST(request: Request) {
   // 2) Enviar a Kommo (no bloquea la respuesta si falla o está deshabilitado).
   try {
     const tags = [
-      "web-configurador",
+      data.source === "parcial" ? "cotizacion-parcial" : "web-configurador",
       data.comuna,
       data.projectType === "remodelacion" ? "remodelacion" : "cocina-nueva",
     ].filter(Boolean) as string[];

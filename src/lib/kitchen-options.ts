@@ -102,19 +102,19 @@ export const FRONTS: MaterialOption<FrontId>[] = [
     id: "melamina-mate",
     label: "Melamina lisa",
     desc: "Color sólido mate. Limpio y moderno.",
-    swatch: "#e7e2d8",
+    swatch: "#d8d2c6",
   },
   {
     id: "melamina-madera",
     label: "Melamina símil madera",
     desc: "Textura de madera cálida del sur.",
-    swatch: "#b0834e",
+    swatch: "#9c6b3f",
   },
   {
     id: "laqueado",
-    label: "Laqueado",
-    desc: "Terminación premium sin tiradores.",
-    swatch: "#33473c",
+    label: "Laqueado negro",
+    desc: "Terminación premium mate, sin tiradores.",
+    swatch: "#1c1c1c",
   },
 ];
 

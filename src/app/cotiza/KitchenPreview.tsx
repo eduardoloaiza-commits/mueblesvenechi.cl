@@ -9,7 +9,8 @@ import type { KitchenConfig } from "@/lib/pricing";
 
 const W = 400;
 const H = 300;
-const WALL = "#efe7d8";
+const FLOOR = "#0e0e0e";
+const ROOM = "#161616";
 const COUNTER_THICK = 34;
 
 export function KitchenPreview({ config }: { config: KitchenConfig }) {
@@ -33,8 +34,8 @@ export function KitchenPreview({ config }: { config: KitchenConfig }) {
       aria-label={`Vista en planta de cocina ${config.layout}`}
     >
       {/* piso / habitación */}
-      <rect x="0" y="0" width={W} height={H} rx="14" fill={WALL} />
-      <rect x="14" y="14" width={W - 28} height={H - 28} rx="10" fill="#fbf7f0" />
+      <rect x="0" y="0" width={W} height={H} rx="6" fill={FLOOR} />
+      <rect x="14" y="14" width={W - 28} height={H - 28} rx="4" fill={ROOM} stroke="#262626" />
 
       {/* Tramo inferior (siempre presente) */}
       <CounterRun
@@ -83,7 +84,7 @@ export function KitchenPreview({ config }: { config: KitchenConfig }) {
             height={52}
             rx="6"
             fill={counter}
-            stroke="#00000018"
+            stroke="#ffffff1f"
           />
           <rect
             x={W / 2 - 51}
@@ -102,7 +103,7 @@ export function KitchenPreview({ config }: { config: KitchenConfig }) {
         y={H - 12}
         textAnchor="middle"
         fontSize="12"
-        fill="#6b5f52"
+        fill="#878787"
         fontFamily="var(--font-sans), sans-serif"
       >
         {config.baseMeters} m
@@ -133,7 +134,7 @@ function CounterRun({
   const edge = 8;
   return (
     <g>
-      <rect x={x} y={y} width={w} height={h} rx="4" fill={counter} stroke="#00000018" />
+      <rect x={x} y={y} width={w} height={h} rx="4" fill={counter} stroke="#ffffff1f" />
       {frontEdge === "top" && (
         <rect x={x + 3} y={y + h - edge} width={w - 6} height={edge - 1} rx="2" fill={front} />
       )}

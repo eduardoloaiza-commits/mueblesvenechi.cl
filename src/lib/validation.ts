@@ -31,6 +31,9 @@ export const leadSchema = z.object({
   // Precio estimado calculado en el cliente (se recalcula en el server igual)
   priceFrom: z.number().int().min(0).optional(),
   priceTo: z.number().int().min(0).optional(),
+
+  // Origen del lead: "configurador" (completado) o "parcial" (captura progresiva)
+  source: z.enum(["configurador", "parcial"]).optional(),
 });
 
 export type LeadInput = z.infer<typeof leadSchema>;

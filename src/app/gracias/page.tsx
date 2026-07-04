@@ -15,12 +15,12 @@ export default function GraciasPage() {
   return (
     <>
       <SiteHeader />
-      <section className="container-page py-20">
-        <div className="mx-auto max-w-xl text-center">
-          <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-pine-100 text-2xl">
+      <section className="container-page py-24">
+        <div className="mx-auto max-w-xl border border-line bg-surface p-10 text-center">
+          <div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-gold text-2xl text-gold">
             ✓
           </div>
-          <h1 className="font-display mt-5 text-3xl font-semibold text-pine">
+          <h1 className="font-display mt-6 text-3xl font-medium text-foreground">
             Recibimos tu cotización
           </h1>
           <p className="mt-3 text-muted">

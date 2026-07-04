@@ -2,12 +2,13 @@
 // Todo lo editable del negocio vive acá para no buscarlo por el código.
 
 export const site = {
-  brand: "Muebles Venechi",
+  brand: "Espacio VCH",
+  brandFull: "Espacio VCH · Venechi",
   domain: "mueblesvenechi.cl",
   url: "https://mueblesvenechi.cl",
-  tagline: "Tu cocina a medida, montada y funcional en 40 días",
+  tagline: "Tu cocina a medida, montada en 40 días",
   description:
-    "Fabricamos cocinas, closets y baños a medida en Villarrica, Pucón y Lican Ray. Diseño propio, marmolería en la casa y entrega en tiempo récord.",
+    "Marmolería y mueblería premium. Cocinas, closets y baños a medida en Villarrica, Pucón y Lican Ray. Diseño propio, marmolería en casa y entrega en 40 días.",
 
   // Dirección física real (Marmolería y Mueblería Venechi).
   address: "Isabel Riquelme 241, Villarrica, Región de La Araucanía",

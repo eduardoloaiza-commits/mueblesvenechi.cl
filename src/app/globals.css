@@ -1,51 +1,45 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ */
-/* Muebles Venechi — sistema de marca                                  */
-/* Madera cálida + verde bosque del sur de Chile (Villarrica/Pucón).   */
+/* ESPACIO VCH — sistema de marca (brandbook oficial)                  */
+/* Negro #000 · Dorado #F9B233 · Gris #878787 · lujo sobrio editorial. */
 /* ------------------------------------------------------------------ */
 
 :root {
-  --background: #faf6f0; /* crema cálida */
-  --surface: #ffffff;
-  --surface-muted: #f2ebe0;
-  --foreground: #241f1b; /* café casi negro */
-  --muted: #6b5f52;
+  --background: #000000;
+  --surface: #0a0a0a;
+  --surface-2: #141414;
+  --foreground: #f5f3ef; /* blanco cálido */
+  --muted: #9a948b; /* gris texto secundario */
 
-  --pine: #1f3d2f; /* verde bosque — marca */
-  --pine-600: #2c5340;
-  --pine-100: #e4ede7;
+  --gold: #f9b233; /* dorado — acento único */
+  --gold-600: #d9942a;
+  --grey: #878787; /* gris del brandbook */
 
-  --oak: #c8863f; /* roble/ámbar — acento */
-  --oak-600: #a86d2c;
-  --oak-100: #f6e9d6;
-
-  --border: #e5dccd;
+  --line: #262626; /* líneas/bordes sutiles */
+  --line-strong: #3a3a3a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
-  --color-surface-muted: var(--surface-muted);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
 
-  --color-pine: var(--pine);
-  --color-pine-600: var(--pine-600);
-  --color-pine-100: var(--pine-100);
-
-  --color-oak: var(--oak);
-  --color-oak-600: var(--oak-600);
-  --color-oak-100: var(--oak-100);
-
-  --color-border: var(--border);
+  --color-gold: var(--gold);
+  --color-gold-600: var(--gold-600);
+  --color-grey: var(--grey);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
 
   --font-sans: var(--font-sans);
-  --radius-xl: 1.25rem;
+  --font-display: var(--font-display);
+  --radius: 4px;
 }
 
 * {
-  border-color: var(--border);
+  border-color: var(--line);
 }
 
 body {
@@ -55,74 +49,84 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2,
-h3 {
-  letter-spacing: -0.02em;
-}
-
 .font-display {
   font-family: var(--font-display), Georgia, serif;
   letter-spacing: -0.01em;
 }
 
-/* Utilidades de composición reutilizadas en toda la web */
-.container-page {
-  width: 100%;
-  max-width: 72rem;
-  margin-inline: auto;
-  padding-inline: 1.25rem;
+/* Etiqueta / kicker: mayúscula con tracking amplio */
+.kicker {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
+.container-page {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* Filete dorado fino de sección */
+.rule-gold {
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.85;
+}
+
+/* Botones */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  background: var(--oak);
-  color: #fff;
+  gap: 0.6rem;
+  background: var(--gold);
+  color: #111;
   font-weight: 600;
-  padding: 0.85rem 1.5rem;
-  border-radius: 999px;
+  letter-spacing: 0.02em;
+  padding: 0.9rem 1.6rem;
+  border-radius: var(--radius);
   transition: background 0.15s ease, transform 0.15s ease;
 }
 .btn-primary:hover {
-  background: var(--oak-600);
-  transform: translateY(-1px);
+  background: var(--gold-600);
 }
 
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   background: transparent;
-  color: var(--pine);
-  font-weight: 600;
-  padding: 0.85rem 1.5rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  transition: background 0.15s ease;
+  color: var(--foreground);
+  font-weight: 500;
+  padding: 0.9rem 1.6rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-strong);
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 .btn-ghost:hover {
-  background: var(--surface-muted);
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
+/* Inputs */
 .input {
   width: 100%;
-  border-radius: 0.75rem;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  padding: 0.8rem 1rem;
   font-size: 0.95rem;
   color: var(--foreground);
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 .input:focus {
-  border-color: var(--oak);
-  box-shadow: 0 0 0 3px var(--oak-100);
+  border-color: var(--gold);
 }
 .input::placeholder {
-  color: #a99e8e;
+  color: #6b665d;
 }
