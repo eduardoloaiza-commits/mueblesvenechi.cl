@@ -48,7 +48,7 @@ export default function Home() {
               <Link href="/cotiza" className="btn-primary">
                 Cotiza tu cocina
               </Link>
-              <a href="#trabajos" className="kicker text-foreground transition hover:text-gold">
+              <a href="#trabajos" className="link-cta">
                 Ver trabajos →
               </a>
             </div>
@@ -87,8 +87,9 @@ export default function Home() {
                 <h3 className="font-display mt-4 text-3xl font-medium text-foreground">{l.t}</h3>
                 <p className="mt-3 max-w-md text-muted">{l.d}</p>
               </div>
-              <div className="relative aspect-[4/3] overflow-hidden border border-line">
+              <div className="relative aspect-[4/3] overflow-hidden border border-white/15 shadow-[0_24px_50px_-30px_rgba(0,0,0,0.8)]">
                 <Image src={l.img} alt={l.t} fill className="object-cover" />
+                <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/10" />
               </div>
             </div>
           ))}
@@ -141,24 +142,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Registro de obra */}
-      <section id="trabajos" className="container-page py-24">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2 className="font-display text-4xl font-medium text-foreground">Registro de obra</h2>
-          <span className="kicker text-muted">Próximamente con fotos reales de taller</span>
-        </div>
-        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="relative col-span-2 row-span-2 aspect-square overflow-hidden border border-line md:aspect-auto">
-            <Image src="/images/hero-kitchen.jpg" alt="Cocina terminada" fill className="object-cover" />
+      {/* Registro de obra — banda clara para contraste (galería tipo museo) */}
+      <section id="trabajos" className="bg-[#efe9dd] text-[#1a1712]">
+        <div className="rule-gold" />
+        <div className="container-page py-24">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="kicker text-gold-600">Registro de obra</p>
+              <h2 className="font-display mt-3 text-4xl font-medium">Piezas que hablan por nosotros</h2>
+            </div>
+            <span className="kicker text-[#6b6255]">Próximamente con fotos reales de taller</span>
           </div>
-          <div className="relative aspect-square overflow-hidden border border-line">
-            <Image src="/images/marble-granite.jpg" alt="Granito" fill className="object-cover" />
-          </div>
-          <div className="relative aspect-square overflow-hidden border border-line">
-            <Image src="/images/marble-quartz.jpg" alt="Cuarzo" fill className="object-cover" />
-          </div>
-          <div className="relative col-span-2 aspect-[2/1] overflow-hidden border border-line">
-            <Image src="/images/marble-sintered.jpg" alt="Piedra sinterizada" fill className="object-cover" />
+          <div className="mt-12 grid grid-cols-2 gap-5 md:grid-cols-4">
+            <Frame className="col-span-2 row-span-2" ratio="aspect-square md:aspect-auto" src="/images/hero-kitchen.jpg" alt="Cocina terminada" />
+            <Frame ratio="aspect-square" src="/images/marble-quartz.jpg" alt="Cubierta de cuarzo blanco" />
+            <Frame ratio="aspect-square" src="/images/marble-granite.jpg" alt="Cubierta de granito" />
+            <Frame className="col-span-2" ratio="aspect-[2/1]" src="/images/marble-sintered.jpg" alt="Piedra sinterizada" />
           </div>
         </div>
       </section>
@@ -194,5 +193,27 @@ export default function Home() {
 
       <SiteFooter />
     </>
+  );
+}
+
+// Imagen enmarcada tipo galería: mat blanco + sombra, para que la pieza
+// resalte con contraste sobre cualquier fondo.
+function Frame({
+  src,
+  alt,
+  ratio,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  ratio: string;
+  className?: string;
+}) {
+  return (
+    <figure className={`bg-white p-2 shadow-[0_24px_50px_-28px_rgba(0,0,0,0.55)] ${className}`}>
+      <div className={`relative w-full overflow-hidden ${ratio}`}>
+        <Image src={src} alt={alt} fill className="object-cover" />
+      </div>
+    </figure>
   );
 }
