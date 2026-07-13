@@ -3,14 +3,17 @@
 // cliente, los colores del preview SVG y los precios (en lib/pricing.ts).
 // El negocio ajusta aquí labels, materiales y swatches sin tocar la UI.
 
-export type LayoutId = "lineal" | "l" | "u" | "isla";
-export type CountertopId = "postformado" | "cuarzo" | "granito" | "sinterizada";
+export type LayoutId = "lineal" | "l" | "paralela" | "u" | "peninsula" | "isla";
+export type CountertopId = "postformado" | "porcelanica" | "cuarzo" | "ultracompacto";
 export type FrontId = "melamina-mate" | "melamina-madera" | "laqueado";
+export type LacquerColorId = "blanco" | "crema" | "gris" | "grafito" | "negro";
+export type WallPosition = "izquierda" | "derecha" | "completo";
 export type ExtraId =
   | "campana"
   | "lavaplatos"
-  | "cajones"
-  | "organizadores"
+  | "especiero"
+  | "basurero-retractil"
+  | "vitrinas"
   | "iluminacion"
   | "muro-cristal";
 
@@ -55,9 +58,23 @@ export const LAYOUTS: LayoutOption[] = [
     hasIsland: false,
   },
   {
+    id: "paralela",
+    label: "Paralela",
+    desc: "Dos frentes enfrentados, tipo pasillo.",
+    complexity: 1.08,
+    hasIsland: false,
+  },
+  {
     id: "u",
     label: "En U",
     desc: "Tres frentes de trabajo. Máximo almacenamiento.",
+    complexity: 1.12,
+    hasIsland: false,
+  },
+  {
+    id: "peninsula",
+    label: "Con península",
+    desc: "Un tramo se proyecta como barra o desayunador.",
     complexity: 1.12,
     hasIsland: false,
   },
@@ -78,10 +95,10 @@ export const COUNTERTOPS: MaterialOption<CountertopId>[] = [
     swatch: "#d9cbb3",
   },
   {
-    id: "granito",
-    label: "Granito",
-    desc: "Piedra natural, cálida y muy durable.",
-    swatch: "#4a4640",
+    id: "porcelanica",
+    label: "Porcelánica",
+    desc: "Superficie cerámica, resistente al calor y rayas.",
+    swatch: "#cfc9bf",
   },
   {
     id: "cuarzo",
@@ -90,8 +107,8 @@ export const COUNTERTOPS: MaterialOption<CountertopId>[] = [
     swatch: "#e8e4dc",
   },
   {
-    id: "sinterizada",
-    label: "Piedra sinterizada",
+    id: "ultracompacto",
+    label: "Piedra ultracompacta",
     desc: "Alta gama: resiste calor, rayas y manchas.",
     swatch: "#2f2c28",
   },
@@ -112,19 +129,39 @@ export const FRONTS: MaterialOption<FrontId>[] = [
   },
   {
     id: "laqueado",
-    label: "Laqueado negro",
-    desc: "Terminación premium mate, sin tiradores.",
+    label: "Laqueado",
+    desc: "Terminación premium mate, en el color que elijas.",
     swatch: "#1c1c1c",
   },
 ];
 
+// Gama de colores para la terminación laqueada (cocinas y closets).
+export const LACQUER_COLORS: MaterialOption<LacquerColorId>[] = [
+  { id: "blanco", label: "Blanco", desc: "Luminoso y atemporal.", swatch: "#f2f1ec" },
+  { id: "crema", label: "Crema", desc: "Cálido, combina con madera.", swatch: "#e6dcc3" },
+  { id: "gris", label: "Gris", desc: "Neutro contemporáneo.", swatch: "#9b9b97" },
+  { id: "grafito", label: "Grafito", desc: "Oscuro sin ser negro.", swatch: "#474747" },
+  { id: "negro", label: "Negro", desc: "El clásico editorial.", swatch: "#1c1c1c" },
+];
+
+// Posición del tramo de muebles aéreos sobre el mesón (para el plano).
+export const WALL_POSITIONS: { id: WallPosition; label: string }[] = [
+  { id: "izquierda", label: "A la izquierda" },
+  { id: "derecha", label: "A la derecha" },
+  { id: "completo", label: "Todo el tramo" },
+];
+
+// La campana no se vende: se deja el espacio listo en el diseño (precio $0).
+// Los cajones con riel telescópico van incluidos en el mueble base, por eso
+// ya no aparecen como extra (se cotizan como metros de cajonera en Medidas).
 export const EXTRAS: ExtraOption[] = [
-  { id: "campana", label: "Campana extractora", desc: "Empotrada, sin humos ni olores." },
-  { id: "lavaplatos", label: "Lavaplatos + grifería", desc: "Acero inoxidable instalado." },
-  { id: "cajones", label: "Cajones con riel telescópico", desc: "Cierre suave, apertura total." },
-  { id: "organizadores", label: "Organizadores interiores", desc: "Cubiertos, especias y basura." },
+  { id: "campana", label: "Campana extractora", desc: "No se incluye la campana: dejamos el espacio listo en el diseño." },
+  { id: "lavaplatos", label: "Lavaplatos", desc: "Acero inoxidable instalado." },
+  { id: "especiero", label: "Especiero extraíble", desc: "Condimentos a mano, junto a la zona de cocción." },
+  { id: "basurero-retractil", label: "Basurero retráctil", desc: "Oculto tras la puerta, se abre con el mueble." },
+  { id: "vitrinas", label: "Vitrinas de vidrio", desc: "Puertas vidriadas para lucir vajilla y copas." },
   { id: "iluminacion", label: "Iluminación LED bajo mueble", desc: "Luz cálida sobre la cubierta." },
-  { id: "muro-cristal", label: "Cubremuro de cristal", desc: "Fácil de limpiar, sin juntas." },
+  { id: "muro-cristal", label: "Salpicadero de cristal", desc: "Fácil de limpiar, sin juntas." },
 ];
 
 export const PROJECT_TYPES: { id: ProjectType; label: string; desc: string }[] = [
@@ -144,3 +181,13 @@ export const layoutById = (id: LayoutId) => LAYOUTS.find((l) => l.id === id)!;
 export const countertopById = (id: CountertopId) => COUNTERTOPS.find((c) => c.id === id)!;
 export const frontById = (id: FrontId) => FRONTS.find((f) => f.id === id)!;
 export const extraById = (id: ExtraId) => EXTRAS.find((e) => e.id === id)!;
+export const lacquerById = (id: LacquerColorId) => LACQUER_COLORS.find((c) => c.id === id)!;
+
+// Color efectivo de los frentes para los previews: si es laqueado, manda el
+// color elegido (negro por defecto).
+export const frontSwatch = (front: FrontId, lacquerColor?: LacquerColorId) =>
+  front === "laqueado" ? lacquerById(lacquerColor ?? "negro").swatch : frontById(front).swatch;
+
+// Filtro para payloads externos: descarta ids de extras que ya no existen
+// (ej. bundles antiguos cacheados que aún mandan "cajones"/"organizadores").
+export const isExtraId = (id: string): id is ExtraId => EXTRAS.some((e) => e.id === id);

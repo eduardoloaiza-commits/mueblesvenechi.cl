@@ -37,19 +37,29 @@ Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · Prisma 7 · PostgreSQL
 | `src/lib/kommo.ts` | Cliente Kommo headless (NO-OP si no hay token) |
 | `src/lib/db.ts` | Prisma client con adapter pg |
 | `prisma/schema.prisma` | Modelo `Lead` |
+| `src/app/cocinas-a-medida/` etc. | Páginas pilar SEO (+ closets, baños, cubiertas) |
+| `src/app/cocinas-a-medida-villarrica/` `-pucon/` | Páginas locales SEO |
+| `src/app/guias/` | Guías de contenido (precios, piedras, medición) |
+| `src/lib/seo.ts` | **SEO**: registro `PAGES`, `pageMetadata()`, builders JSON-LD |
+| `src/app/sitemap.ts` / `robots.ts` | Generados desde `PAGES` de `seo.ts` |
 
 ## Configurador (`/cotiza`)
 
-Wizard de 7 pasos con **preview SVG en planta** y **precio en vivo** en una columna sticky:
-Distribución → Medidas → Cubierta → Frentes → Extras → Proyecto → Datos de contacto.
-Al enviar, hace `POST /api/lead`. El precio se **recalcula siempre en el servidor** (no se confía
-en el cliente). Ver `Doc/simulador.md`.
+Cotiza **cocinas y closets** (selector de producto sobre el wizard; deep-link
+`/cotiza?producto=closet`). Ambos flujos son de 7 pasos con **preview SVG** (planta para
+cocinas, elevación frontal para closets) y **precio en vivo** en una columna sticky.
+Al enviar, hace `POST /api/lead` con `product`. El precio se **recalcula siempre en el
+servidor** (no se confía en el cliente): `calcPrice` para cocinas, `calcClosetPrice`
+(`src/lib/closet-pricing.ts`, catálogo en `closet-options.ts`) para closets.
+Ver `Doc/simulador.md`.
 
 ## Precios
 
-Los valores en `src/lib/pricing.ts` (`PRICING`) son **placeholders**. El negocio debe reemplazarlos
-con sus números reales. Detalle y guía de edición en `Doc/precios.md`. La estimación siempre se
-presenta como "desde" + rango, con disclaimer de que el valor final es tras visita y medición.
+Desde 2026-07-13 los precios por metro lineal de **muebles y cubiertas de cocina son reales**
+(entregados por el cliente) y están en valores **NETOS**: la UI muestra siempre "desde $X + IVA".
+Siguen placeholder: multiplicadores de frente, extras, isla, remodelación y toda la tabla de
+closets. Detalle y guía de edición en `Doc/precios.md`. La estimación siempre se presenta como
+"desde" + rango; la **visita técnica de medición se cobra $50.000** (`site.visitPrice`).
 
 ## Kommo CRM (headless)
 
@@ -73,13 +83,31 @@ un warning) para permitir la demo antes de conectar Neon. Aplicar el schema:
 npm run db:push
 ```
 
-## Estado actual (Fase 1)
+## SEO
+
+El sitio tiene estructura SEO completa (Fase 2): páginas pilar por servicio, páginas
+locales, guías, sitemap/robots, canonicals y JSON-LD. **Al crear una página pública nueva,
+agregarla al registro `PAGES` de `src/lib/seo.ts`** (alimenta sitemap y prioridades).
+Detalle completo en `Doc/seo.md`.
+
+## Estado actual (Fase 2)
 
 Hecho: scaffold, home, configurador con preview + precio, API de leads con validación y motor de
-precios, cliente Kommo, docs. Verificado: `npm run build` OK, flujo por HTTP OK.
+precios, cliente Kommo, docs (Fase 1). Estructura SEO completa: 4 páginas pilar, 2 locales,
+3 guías, sitemap/robots/JSON-LD/canonicals e interlinking (Fase 2). Verificado: `npm run build`
+OK, flujo por HTTP OK.
+
+Ajustes post-reunión cliente (2026-07-13): tipologías paralela y península, metros de
+cajonera (`drawerMeters`), posición de aéreos, refrigerador fuera de la medida en el preview,
+gama de colores de laqueado (cocina y closet), cubiertas reales (postformado/porcelánica/
+cuarzo/ultracompacto), extras renovados (campana $0, salpicadero, especiero, basurero
+retráctil, vitrinas), precios reales netos "+ IVA", y `ThankYouPanel` compartido con mapa,
+visita técnica $50.000 y agendamiento online (`site.bookingUrl`).
 
 Pendiente (requiere datos del negocio):
-- Conectar Neon (`DATABASE_URL`) y correr `npm run db:push`.
+- Conectar Neon (`DATABASE_URL`) y correr `npm run db:push` (el schema ya incluye
+  `drawerMeters`, `wallPosition`, `lacquerColor`).
 - Conectar cuenta real de Kommo (token + pipeline/status ids).
-- Reemplazar precios placeholder por reales (`src/lib/pricing.ts` / `Doc/precios.md`).
+- Validar multiplicadores de frente y precios de extras/isla/closets (`Doc/precios.md`).
+- URL del appointment schedule de Google Calendar → `site.bookingUrl`.
 - Assets reales: logo, fotos de trabajos, datos de contacto en `src/lib/site.ts`.

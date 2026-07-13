@@ -16,6 +16,13 @@ export const site = {
   yearsExperience: 15,
   deliveryDays: 40,
 
+  // Visita técnica de medición en terreno (valor que se cobra al agendar).
+  visitPrice: 50_000,
+
+  // URL del "appointment schedule" de Google Calendar para agendar reunión
+  // online. Mientras esté vacía, el botón de agendamiento no se muestra.
+  bookingUrl: "" as string,
+
   // Contacto — reemplazar por los datos reales del negocio.
   whatsappNumber: "56900000000", // formato wa.me, sin '+' ni espacios
   phoneDisplay: "+56 9 0000 0000",
@@ -28,3 +35,6 @@ export function whatsappLink(message?: string): string {
   const base = `https://wa.me/${site.whatsappNumber}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
+
+// Mapa embebido de la sede (por búsqueda de dirección, sin API key).
+export const mapsEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`;

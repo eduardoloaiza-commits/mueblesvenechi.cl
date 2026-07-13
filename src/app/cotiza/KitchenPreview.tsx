@@ -1,11 +1,13 @@
 "use client";
 
-import { countertopById, frontById } from "@/lib/kitchen-options";
+import { countertopById, frontSwatch } from "@/lib/kitchen-options";
 import type { KitchenConfig } from "@/lib/pricing";
 
 // Preview en planta (vista superior) que se actualiza en vivo con la
-// configuración. Muestra la distribución (lineal/L/U/isla), colores de
-// cubierta y frentes, y la isla cuando corresponde. Es esquemático, no a escala.
+// configuración. Muestra la distribución (lineal/L/paralela/U/península/isla),
+// colores de cubierta y frentes, el tramo de muebles aéreos (banda punteada
+// sobre el mesón, según posición) y el refrigerador fuera del tramo medido.
+// Es esquemático, no a escala.
 
 const W = 400;
 const H = 300;
@@ -15,16 +17,39 @@ const COUNTER_THICK = 34;
 
 export function KitchenPreview({ config }: { config: KitchenConfig }) {
   const counter = countertopById(config.countertop).swatch;
-  const front = frontById(config.front).swatch;
+  const front = frontSwatch(config.front, config.lacquerColor);
 
   // El largo de los tramos escala (suavemente) con los metros base.
+  // El máximo deja espacio a la derecha para el refrigerador.
   const span = Math.max(0.35, Math.min(1, config.baseMeters / 6));
-  const runLen = 70 + span * 240; // largo del tramo inferior
+  const runLen = 70 + span * 220; // largo del tramo inferior
   const sideLen = 60 + span * 150;
+
+  const runX = 30;
+  const runY = H - 30 - COUNTER_THICK;
 
   const showIsland = config.layout === "isla";
   const showLeft = config.layout === "l" || config.layout === "u";
   const showRight = config.layout === "u";
+  const showTop = config.layout === "paralela";
+  const showPeninsula = config.layout === "peninsula";
+
+  // Banda de muebles aéreos sobre el tramo inferior: proporcional a los
+  // metros murales, anclada según la posición elegida.
+  const wallM = Math.max(0, config.wallMeters);
+  const bandFull = runLen - 8;
+  const bandLen =
+    config.wallPosition === "completo"
+      ? bandFull
+      : Math.max(28, bandFull * Math.min(1, wallM / Math.max(config.baseMeters, 0.5)));
+  const bandX =
+    config.wallPosition === "derecha" ? runX + 4 + (bandFull - bandLen) : runX + 4;
+
+  // Refrigerador: siempre fuera del tramo medido, a la derecha.
+  const fridgeX = runX + runLen + 12;
+  const fridgeW = 34;
+  const fridgeH = 40;
+  const fridgeY = runY + COUNTER_THICK - fridgeH;
 
   return (
     <svg
@@ -39,8 +64,8 @@ export function KitchenPreview({ config }: { config: KitchenConfig }) {
 
       {/* Tramo inferior (siempre presente) */}
       <CounterRun
-        x={30}
-        y={H - 30 - COUNTER_THICK}
+        x={runX}
+        y={runY}
         w={runLen}
         h={COUNTER_THICK}
         counter={counter}
@@ -51,8 +76,8 @@ export function KitchenPreview({ config }: { config: KitchenConfig }) {
       {/* Tramo izquierdo (L y U) */}
       {showLeft && (
         <CounterRun
-          x={30}
-          y={H - 30 - COUNTER_THICK - sideLen}
+          x={runX}
+          y={runY - sideLen}
           w={COUNTER_THICK}
           h={sideLen}
           counter={counter}
@@ -64,14 +89,53 @@ export function KitchenPreview({ config }: { config: KitchenConfig }) {
       {/* Tramo derecho (U) */}
       {showRight && (
         <CounterRun
-          x={30 + runLen - COUNTER_THICK}
-          y={H - 30 - COUNTER_THICK - sideLen}
+          x={runX + runLen - COUNTER_THICK}
+          y={runY - sideLen}
           w={COUNTER_THICK}
           h={sideLen}
           counter={counter}
           front={front}
           frontEdge="left"
         />
+      )}
+
+      {/* Tramo superior (paralela): segundo frente enfrentado al inferior */}
+      {showTop && (
+        <CounterRun
+          x={runX}
+          y={30}
+          w={runLen}
+          h={COUNTER_THICK}
+          counter={counter}
+          front={front}
+          frontEdge="top"
+        />
+      )}
+
+      {/* Península: tramo que se proyecta hacia el interior como desayunador */}
+      {showPeninsula && (
+        <g>
+          <CounterRun
+            x={runX + runLen - COUNTER_THICK}
+            y={runY - 90}
+            w={COUNTER_THICK}
+            h={90}
+            counter={counter}
+            front={front}
+            frontEdge="left"
+          />
+          {/* pisos del desayunador */}
+          {[0, 1, 2].map((i) => (
+            <circle
+              key={i}
+              cx={runX + runLen + 10}
+              cy={runY - 78 + i * 26}
+              r="7"
+              fill="#3a3a3a"
+              stroke="#ffffff1f"
+            />
+          ))}
+        </g>
       )}
 
       {/* Isla central */}
@@ -97,9 +161,67 @@ export function KitchenPreview({ config }: { config: KitchenConfig }) {
         </g>
       )}
 
+      {/* Muebles aéreos: banda punteada sobre el tramo inferior */}
+      {wallM > 0 && (
+        <g>
+          <rect
+            x={bandX}
+            y={runY + 6}
+            width={bandLen}
+            height={COUNTER_THICK - 12}
+            rx="3"
+            fill={front}
+            opacity="0.22"
+            stroke="#ffffff66"
+            strokeDasharray="5 4"
+          />
+          <text
+            x={bandX + bandLen / 2}
+            y={runY - 6}
+            textAnchor="middle"
+            fontSize="9"
+            fill="#6f6f6f"
+            fontFamily="var(--font-sans), sans-serif"
+          >
+            aéreos {config.wallMeters} m
+          </text>
+        </g>
+      )}
+
+      {/* Refrigerador: fuera de la medida de la cocina */}
+      <g>
+        <rect
+          x={fridgeX}
+          y={fridgeY}
+          width={fridgeW}
+          height={fridgeH}
+          rx="3"
+          fill="#303030"
+          stroke="#ffffff1f"
+        />
+        <line
+          x1={fridgeX + fridgeW / 2}
+          y1={fridgeY + 4}
+          x2={fridgeX + fridgeW / 2}
+          y2={fridgeY + fridgeH - 4}
+          stroke="#00000066"
+          strokeWidth="2"
+        />
+        <text
+          x={fridgeX + fridgeW / 2}
+          y={fridgeY - 6}
+          textAnchor="middle"
+          fontSize="8"
+          fill="#6f6f6f"
+          fontFamily="var(--font-sans), sans-serif"
+        >
+          Refrig.
+        </text>
+      </g>
+
       {/* etiqueta de metros */}
       <text
-        x={30 + runLen / 2}
+        x={runX + runLen / 2}
         y={H - 12}
         textAnchor="middle"
         fontSize="12"

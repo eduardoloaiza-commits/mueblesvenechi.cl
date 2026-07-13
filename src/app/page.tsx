@@ -7,10 +7,10 @@ import { site, whatsappLink } from "@/lib/site";
 const TRUST = ["40 días", "Precio desde claro", "15 años de oficio", "Marmolería propia"];
 
 const LINEAS = [
-  { n: "01", t: "Cocinas", d: "Diseñadas a tu espacio real, con la cubierta de piedra que elijas.", img: "/images/hero-kitchen.jpg" },
-  { n: "02", t: "Closets y vestidores", d: "Aprovechan cada rincón y ordenan de verdad.", img: "/images/marble-quartz.jpg" },
-  { n: "03", t: "Baños", d: "Vanitorios y guardado a prueba de humedad.", img: "/images/marble-sintered.jpg" },
-  { n: "04", t: "Cubiertas de piedra", d: "Granito, cuarzo y piedra sinterizada, medidas e instaladas.", img: "/images/marble-granite.jpg" },
+  { n: "01", t: "Cocinas", d: "Diseñadas a tu espacio real, con la cubierta de piedra que elijas.", img: "/images/hero-kitchen.jpg", href: "/cocinas-a-medida" },
+  { n: "02", t: "Closets y vestidores", d: "Aprovechan cada rincón y ordenan de verdad.", img: "/images/marble-quartz.jpg", href: "/closets-y-vestidores" },
+  { n: "03", t: "Baños", d: "Vanitorios y guardado a prueba de humedad.", img: "/images/marble-sintered.jpg", href: "/muebles-de-bano" },
+  { n: "04", t: "Cubiertas de piedra", d: "Granito, cuarzo y piedra sinterizada, medidas e instaladas.", img: "/images/marble-granite.jpg", href: "/cubiertas-de-piedra" },
 ];
 
 const PASOS = [
@@ -86,6 +86,9 @@ export default function Home() {
                 </div>
                 <h3 className="font-display mt-4 text-3xl font-medium text-foreground">{l.t}</h3>
                 <p className="mt-3 max-w-md text-muted">{l.d}</p>
+                <Link href={l.href} className="link-cta mt-5 inline-flex text-sm">
+                  Conoce más →
+                </Link>
               </div>
               <div className="relative aspect-[4/3] overflow-hidden border border-white/15 shadow-[0_24px_50px_-30px_rgba(0,0,0,0.8)]">
                 <Image src={l.img} alt={l.t} fill className="object-cover" />

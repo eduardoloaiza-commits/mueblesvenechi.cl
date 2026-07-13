@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
+import { absoluteUrl, localBusinessJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
 
 const montserrat = Montserrat({
   variable: "--font-sans",
@@ -22,6 +24,7 @@ export const metadata: Metadata = {
     template: `%s · ${site.brand}`,
   },
   description: site.description,
+  alternates: { canonical: "/" },
   openGraph: {
     title: `${site.brand} — ${site.tagline}`,
     description: site.description,
@@ -29,6 +32,7 @@ export const metadata: Metadata = {
     siteName: site.brand,
     locale: "es_CL",
     type: "website",
+    images: [{ url: absoluteUrl("/images/hero-kitchen.jpg"), width: 1200, height: 800 }],
   },
 };
 
@@ -42,7 +46,10 @@ export default function RootLayout({
       lang="es"
       className={`${montserrat.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <JsonLd data={localBusinessJsonLd()} />
+        {children}
+      </body>
     </html>
   );
 }

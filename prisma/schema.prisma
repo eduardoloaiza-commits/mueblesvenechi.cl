@@ -7,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// Cotizante capturado por el configurador de cocinas.
+// Cotizante capturado por el configurador (cocinas y closets).
 // La captura es progresiva: el Lead se crea al ingresar los datos de contacto
 // y guarda un snapshot de la configuración cotizada.
 model Lead {
@@ -17,18 +17,28 @@ model Lead {
   email  String?
   comuna String?
 
+  product     String  @default("cocina") // "cocina" | "closet"
   projectType String? // "nueva" | "remodelacion"
   timeframe   String?
 
-  // Snapshot de la configuración cotizada
-  layout      String?
-  baseMeters  Float?
-  wallMeters  Float?
-  countertop  String?
-  front       String?
-  extras      String[] @default([])
-  priceFrom   Int?
-  priceTo     Int?
+  // Snapshot de la configuración cotizada.
+  // Cocina: layout/baseMeters/wallMeters/countertop.
+  // Closet: closetType/doorType/heightOption; baseMeters = metros de frente.
+  // front y extras son compartidos por ambos productos.
+  layout       String?
+  baseMeters   Float?
+  drawerMeters Float? // metros de base con cajonera (cocina)
+  wallMeters   Float?
+  wallPosition String? // "izquierda" | "derecha" | "completo"
+  countertop   String?
+  closetType   String?
+  doorType     String?
+  heightOption String?
+  front        String?
+  lacquerColor String? // color cuando front = "laqueado" (cocina y closet)
+  extras       String[] @default([])
+  priceFrom    Int?
+  priceTo      Int?
 
   source         String  @default("configurador")
   kommoLeadId    Int?

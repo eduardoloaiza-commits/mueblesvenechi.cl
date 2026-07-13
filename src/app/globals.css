@@ -133,6 +133,80 @@ body {
   gap: 0.8rem;
 }
 
+/* Tipografía de artículo para las guías */
+.guide-prose {
+  color: var(--muted);
+  line-height: 1.75;
+}
+.guide-prose h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--foreground);
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+}
+.guide-prose h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
+.guide-prose p {
+  margin-bottom: 1.1rem;
+}
+.guide-prose ul,
+.guide-prose ol {
+  margin: 0 0 1.1rem 1.25rem;
+  list-style: disc;
+}
+.guide-prose ol {
+  list-style: decimal;
+}
+.guide-prose li {
+  margin-bottom: 0.45rem;
+  padding-left: 0.25rem;
+}
+.guide-prose strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.guide-prose a {
+  color: var(--foreground);
+  border-bottom: 1px solid var(--gold);
+  transition: color 0.15s ease;
+}
+.guide-prose a:hover {
+  color: var(--gold);
+}
+.guide-prose table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.guide-prose th {
+  text-align: left;
+  color: var(--foreground);
+  font-weight: 600;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+}
+.guide-prose td {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line);
+  vertical-align: top;
+}
+.guide-prose .callout {
+  border: 1px solid var(--line-strong);
+  border-left: 2px solid var(--gold);
+  background: var(--surface);
+  padding: 1.25rem 1.5rem;
+  margin: 1.75rem 0;
+}
+
 /* Inputs */
 .input {
   width: 100%;

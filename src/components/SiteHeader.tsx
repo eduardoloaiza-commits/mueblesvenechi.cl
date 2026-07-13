@@ -20,11 +20,12 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          <a href="/#lineas" className="kicker text-muted transition hover:text-foreground">Materiales</a>
-          <a href="/#proceso" className="kicker text-muted transition hover:text-foreground">Proceso</a>
-          <a href="/#trabajos" className="kicker text-muted transition hover:text-foreground">Trabajos</a>
-          <a href="/#cobertura" className="kicker text-muted transition hover:text-foreground">Contacto</a>
+        <nav className="hidden items-center gap-7 md:flex">
+          <Link href="/cocinas-a-medida" className="kicker text-muted transition hover:text-foreground">Cocinas</Link>
+          <Link href="/closets-y-vestidores" className="kicker text-muted transition hover:text-foreground">Closets</Link>
+          <Link href="/muebles-de-bano" className="kicker text-muted transition hover:text-foreground">Baños</Link>
+          <Link href="/cubiertas-de-piedra" className="kicker text-muted transition hover:text-foreground">Cubiertas</Link>
+          <Link href="/guias" className="kicker text-muted transition hover:text-foreground">Guías</Link>
         </nav>
 
         <div className="flex items-center gap-4">
