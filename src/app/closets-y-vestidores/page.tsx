@@ -141,7 +141,7 @@ export default function ClosetsPage() {
       <CtaBand
         title="Arma tu closet online y conoce el precio"
         note={`Estimación al instante, sin compromiso. Atendemos ${site.cities.join(", ")} y alrededores.`}
-        whatsappMessage="Hola Espacio VCH, quiero cotizar un closet a medida."
+        whatsappMessage="Hola Muebles Venechi, quiero cotizar un closet a medida."
         primaryLabel="Cotiza tu closet"
         primaryHref="/cotiza?producto=closet"
       />

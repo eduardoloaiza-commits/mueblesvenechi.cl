@@ -8,7 +8,7 @@ import { whatsappLink } from "@/lib/site";
 export function CtaBand({
   title = "Arma tu cocina y conoce el precio hoy",
   note = "Estimación al instante, sin compromiso. El valor final se afina con la visita a terreno.",
-  whatsappMessage = "Hola Espacio VCH, quiero cotizar un proyecto a medida.",
+  whatsappMessage = "Hola Muebles Venechi, quiero cotizar un proyecto a medida.",
   primaryLabel = "Cotiza tu cocina",
   primaryHref = "/cotiza",
   showConfigurator = true,

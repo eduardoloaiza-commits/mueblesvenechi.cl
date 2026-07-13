@@ -174,7 +174,7 @@ export default function CubiertasPage() {
       <CtaBand
         title="Elige tu piedra y cotiza tu cubierta"
         note="Si es para una cocina completa, el configurador incluye la cubierta en la estimación."
-        whatsappMessage="Hola Espacio VCH, quiero cotizar una cubierta de piedra."
+        whatsappMessage="Hola Muebles Venechi, quiero cotizar una cubierta de piedra."
       />
       <SiteFooter />
     </>

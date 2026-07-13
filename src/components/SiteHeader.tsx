@@ -8,15 +8,15 @@ export function SiteHeader() {
       <div className="container-page flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/logo-vch.png"
-            alt="Espacio VCH"
+            src="/logo-venechi.png"
+            alt="Muebles Venechi"
             width={40}
             height={40}
             className="h-9 w-9"
             priority
           />
           <span className="hidden text-sm font-medium tracking-[0.18em] text-foreground sm:inline">
-            ESPACIO VCH
+            MUEBLES VENECHI
           </span>
         </Link>
 

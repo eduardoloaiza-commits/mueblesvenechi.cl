@@ -2,8 +2,8 @@
 // Todo lo editable del negocio vive acá para no buscarlo por el código.
 
 export const site = {
-  brand: "Espacio VCH",
-  brandFull: "Espacio VCH · Venechi",
+  brand: "Muebles Venechi",
+  brandFull: "Muebles Venechi · Espacio VCH",
   domain: "mueblesvenechi.cl",
   url: "https://mueblesvenechi.cl",
   tagline: "Tu cocina a medida, montada en 40 días",

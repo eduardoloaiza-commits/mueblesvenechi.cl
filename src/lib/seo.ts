@@ -67,10 +67,10 @@ export function localBusinessJsonLd() {
     "@type": "LocalBusiness",
     "@id": `${site.url}/#negocio`,
     name: "Muebles Venechi",
-    alternateName: site.brand,
+    alternateName: "Espacio VCH",
     description: site.description,
     url: site.url,
-    logo: absoluteUrl("/logo-vch.png"),
+    logo: absoluteUrl("/logo-venechi.png"),
     image: absoluteUrl("/images/hero-kitchen.jpg"),
     email: site.email,
     address: {
@@ -156,7 +156,7 @@ export function articleJsonLd({
     publisher: {
       "@type": "Organization",
       name: "Muebles Venechi",
-      logo: { "@type": "ImageObject", url: absoluteUrl("/logo-vch.png") },
+      logo: { "@type": "ImageObject", url: absoluteUrl("/logo-venechi.png") },
     },
   };
 }

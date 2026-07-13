@@ -29,7 +29,7 @@ export default function Home() {
         <div className="relative min-h-[86vh] w-full overflow-hidden">
           <Image
             src="/images/hero-kitchen.jpg"
-            alt="Cocina a medida Espacio VCH"
+            alt="Cocina a medida Muebles Venechi"
             fill
             priority
             className="object-cover"

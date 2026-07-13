@@ -18,7 +18,7 @@ export default function CotizaPage() {
       <div className="border-b border-line bg-surface">
         <div className="rule-gold" />
         <div className="container-page py-10">
-          <p className="kicker text-gold">Simulador · Espacio VCH</p>
+          <p className="kicker text-gold">Simulador · Muebles Venechi</p>
           <h1 className="font-display mt-4 text-3xl font-medium text-foreground sm:text-4xl">
             Arma tu cocina o tu closet y conoce el precio
           </h1>

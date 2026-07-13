@@ -137,7 +137,7 @@ export default function CocinasPuconPage() {
 
       <CtaBand
         title="Tu cocina de Pucón, lista en 40 días"
-        whatsappMessage="Hola Espacio VCH, quiero cotizar una cocina a medida en Pucón."
+        whatsappMessage="Hola Muebles Venechi, quiero cotizar una cocina a medida en Pucón."
       />
       <SiteFooter />
     </>

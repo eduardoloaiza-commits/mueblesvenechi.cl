@@ -163,10 +163,10 @@ export default function CocinasAMedidaPage() {
           </h2>
           <div className="mt-3 h-px w-16 bg-gold" />
           <p className="mt-5 max-w-2xl text-muted">
-            La distribución define cuánto rinde tu cocina en el día a día. Estas son las cuatro que
+            La distribución define cuánto rinde tu cocina en el día a día. Estas son las que
             más pedimos en la zona, y todas se pueden armar en el configurador para comparar precios.
           </p>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {LAYOUTS.map((l) => (
               <div key={l.id} className="border border-line bg-black p-6">
                 <span className="kicker text-gold">{l.label}</span>
@@ -268,7 +268,7 @@ export default function CocinasAMedidaPage() {
 
       <CtaBand
         title="Arma tu cocina online y conoce el precio hoy"
-        whatsappMessage="Hola Espacio VCH, quiero cotizar una cocina a medida."
+        whatsappMessage="Hola Muebles Venechi, quiero cotizar una cocina a medida."
       />
       <SiteFooter />
     </>

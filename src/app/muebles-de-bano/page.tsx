@@ -141,7 +141,7 @@ export default function MueblesDeBanoPage() {
       <CtaBand
         title="Cuéntanos cómo es tu baño y te cotizamos"
         note={`Atendemos ${site.cities.join(", ")} y alrededores. Respondemos el mismo día.`}
-        whatsappMessage="Hola Espacio VCH, quiero cotizar un mueble de baño a medida."
+        whatsappMessage="Hola Muebles Venechi, quiero cotizar un mueble de baño a medida."
         showConfigurator={false}
       />
       <SiteFooter />

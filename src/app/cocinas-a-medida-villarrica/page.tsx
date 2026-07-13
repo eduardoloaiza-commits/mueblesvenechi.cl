@@ -131,7 +131,7 @@ export default function CocinasVillarricaPage() {
 
       <CtaBand
         title="Tu cocina se fabrica a minutos de tu casa"
-        whatsappMessage="Hola Espacio VCH, quiero cotizar una cocina a medida en Villarrica."
+        whatsappMessage="Hola Muebles Venechi, quiero cotizar una cocina a medida en Villarrica."
       />
       <SiteFooter />
     </>
