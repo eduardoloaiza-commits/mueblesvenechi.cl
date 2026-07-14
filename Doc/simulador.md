@@ -26,7 +26,17 @@ antiguo cubremuro (el id `muro-cristal` se mantiene por compatibilidad de datos)
 
 ## Preview en vivo
 
-`KitchenPreview.tsx` dibuja una **vista en planta** en SVG que reacciona a la configuración:
+El preview de cocina tiene **dos vistas** con toggle (Planta | Corte) en el aside. La vista
+cambia sola según el paso: Distribución → planta; Medidas y Extras → corte (el usuario puede
+alternar manualmente cuando quiera).
+
+**Corte** (`KitchenSectionPreview.tsx`, elevación frontal del tramo principal): muebles base
+con zócalo y tramo de cajonera (3 cajones a la izquierda), cubierta con volado, salpicadero
+si va el extra, muebles aéreos según posición con divisiones de puertas, vitrinas de vidrio,
+espacio de campana punteado (solo se reserva), línea LED dorada bajo mueble, y refrigerador
+fuera de la medida. Mismo escalado horizontal que la planta para que ambas vistas calcen.
+
+**Planta** — `KitchenPreview.tsx` dibuja una **vista en planta** en SVG que reacciona a la configuración:
 - Tramos de mueble según el layout: lineal, L, **paralela** (dos frentes enfrentados), U,
   **península** (stub perpendicular con pisos de desayunador), isla central.
 - Colores de cubierta y frentes desde los swatches del catálogo; si el frente es laqueado,

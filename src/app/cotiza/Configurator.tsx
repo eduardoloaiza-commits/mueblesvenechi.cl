@@ -40,6 +40,7 @@ import {
 import { site, whatsappLink } from "@/lib/site";
 import { ThankYouPanel } from "@/components/ThankYouPanel";
 import { KitchenPreview } from "./KitchenPreview";
+import { KitchenSectionPreview } from "./KitchenSectionPreview";
 import { ClosetPreview } from "./ClosetPreview";
 
 type Product = "cocina" | "closet";
@@ -75,6 +76,15 @@ export function Configurator() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<null | { priceFromLabel: string | null }>(null);
+  // Vista del preview de cocina: planta (distribución) o corte (aéreos y detalles).
+  const [kitchenView, setKitchenView] = useState<"planta" | "corte">("planta");
+
+  // Cambia la vista sola según el paso: distribución se entiende en planta,
+  // medidas (aéreos/cajonera) y extras se entienden mejor en corte.
+  useEffect(() => {
+    if (step === 0) setKitchenView("planta");
+    if (step === 1 || step === 4) setKitchenView("corte");
+  }, [step]);
 
   const steps = STEPS[product];
   const price = useMemo(
@@ -289,8 +299,37 @@ export function Configurator() {
       {/* Columna sticky: preview + precio (desktop) */}
       <aside className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
         <div className="border border-line bg-surface p-4">
+          {product === "cocina" && (
+            <div className="mb-3 flex items-center justify-between">
+              <span className="kicker text-muted">Tu cocina</span>
+              <div className="inline-flex border border-line">
+                {(
+                  [
+                    ["planta", "Planta"],
+                    ["corte", "Corte"],
+                  ] as const
+                ).map(([v, label]) => (
+                  <button
+                    key={v}
+                    onClick={() => setKitchenView(v)}
+                    className={`px-3 py-1 text-xs transition ${
+                      kitchenView === v ? "bg-gold text-black" : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="aspect-[4/3] w-full">
-            {product === "closet" ? <ClosetPreview config={closet} /> : <KitchenPreview config={config} />}
+            {product === "closet" ? (
+              <ClosetPreview config={closet} />
+            ) : kitchenView === "corte" ? (
+              <KitchenSectionPreview config={config} />
+            ) : (
+              <KitchenPreview config={config} />
+            )}
           </div>
           <div className="mt-4 border-t border-line pt-4">
             <p className="kicker text-gold">Estimación</p>

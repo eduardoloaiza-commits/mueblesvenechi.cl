@@ -10,9 +10,9 @@ export function SiteHeader() {
           <Image
             src="/logo-venechi.png"
             alt="Muebles Venechi"
-            width={40}
-            height={40}
-            className="h-9 w-9"
+            width={56}
+            height={56}
+            className="h-14 w-14"
             priority
           />
           <span className="hidden text-sm font-medium tracking-[0.18em] text-foreground sm:inline">
