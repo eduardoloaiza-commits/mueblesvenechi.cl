@@ -34,16 +34,17 @@ export function KitchenPreview({ config }: { config: KitchenConfig }) {
   const showTop = config.layout === "paralela";
   const showPeninsula = config.layout === "peninsula";
 
-  // Banda de muebles aéreos sobre el tramo inferior: proporcional a los
-  // metros murales, anclada según la posición elegida.
+  // Banda de muebles aéreos sobre el tramo inferior: SIEMPRE proporcional a
+  // los metros murales, anclada según la posición elegida.
   const wallM = Math.max(0, config.wallMeters);
   const bandFull = runLen - 8;
-  const bandLen =
-    config.wallPosition === "completo"
-      ? bandFull
-      : Math.max(28, bandFull * Math.min(1, wallM / Math.max(config.baseMeters, 0.5)));
+  const bandLen = Math.max(20, bandFull * Math.min(1, wallM / Math.max(config.baseMeters, 0.5)));
   const bandX =
-    config.wallPosition === "derecha" ? runX + 4 + (bandFull - bandLen) : runX + 4;
+    config.wallPosition === "derecha"
+      ? runX + 4 + (bandFull - bandLen)
+      : config.wallPosition === "centro"
+        ? runX + 4 + (bandFull - bandLen) / 2
+        : runX + 4;
 
   // Refrigerador: siempre fuera del tramo medido, a la derecha.
   const fridgeX = runX + runLen + 12;

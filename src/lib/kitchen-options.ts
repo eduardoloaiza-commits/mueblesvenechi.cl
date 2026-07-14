@@ -7,7 +7,7 @@ export type LayoutId = "lineal" | "l" | "paralela" | "u" | "peninsula" | "isla";
 export type CountertopId = "postformado" | "porcelanica" | "cuarzo" | "ultracompacto";
 export type FrontId = "melamina-mate" | "melamina-madera" | "laqueado";
 export type LacquerColorId = "blanco" | "crema" | "gris" | "grafito" | "negro";
-export type WallPosition = "izquierda" | "derecha" | "completo";
+export type WallPosition = "izquierda" | "centro" | "derecha";
 export type ExtraId =
   | "campana"
   | "lavaplatos"
@@ -145,10 +145,11 @@ export const LACQUER_COLORS: MaterialOption<LacquerColorId>[] = [
 ];
 
 // Posición del tramo de muebles aéreos sobre el mesón (para el plano).
+// El ancho dibujado SIEMPRE es proporcional a los metros; esto solo ancla.
 export const WALL_POSITIONS: { id: WallPosition; label: string }[] = [
   { id: "izquierda", label: "A la izquierda" },
+  { id: "centro", label: "Al centro" },
   { id: "derecha", label: "A la derecha" },
-  { id: "completo", label: "Todo el tramo" },
 ];
 
 // La campana no se vende: se deja el espacio listo en el diseño (precio $0).

@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       baseMeters: data.baseMeters ?? 0,
       drawerMeters: data.drawerMeters ?? 0,
       wallMeters: data.wallMeters ?? 0,
-      wallPosition: data.wallPosition ?? "completo",
+      wallPosition: data.wallPosition ?? "centro",
       countertop: data.countertop,
       front: data.front,
       lacquerColor: data.lacquerColor,

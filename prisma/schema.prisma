@@ -29,7 +29,7 @@ model Lead {
   baseMeters   Float?
   drawerMeters Float? // metros de base con cajonera (cocina)
   wallMeters   Float?
-  wallPosition String? // "izquierda" | "derecha" | "completo"
+  wallPosition String? // "izquierda" | "centro" | "derecha"
   countertop   String?
   closetType   String?
   doorType     String?

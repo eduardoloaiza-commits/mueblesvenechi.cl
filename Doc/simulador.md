@@ -12,7 +12,7 @@ Capturar la mayor cantidad de inputs del cotizante de forma autónoma y entregar
 | # | Paso | Captura |
 |---|---|---|
 | 1 | Distribución | `layout`: lineal / L / paralela / U / península / isla |
-| 2 | Medidas | `baseMeters` (mín 2 m), `drawerMeters` (tramo con cajonera, 0..base), `wallMeters` (0 o ≥0,5 m) + `wallPosition` (izquierda/derecha/completo) |
+| 2 | Medidas | `baseMeters` (mín 2 m), `drawerMeters` (tramo con cajonera, 0..base), `wallMeters` (0 o ≥0,5 m) + `wallPosition` (izquierda/centro/derecha) |
 | 3 | Cubierta | `countertop`: postformado / porcelánica / cuarzo / ultracompacto |
 | 4 | Frentes | `front`: melamina lisa / símil madera / laqueado. Si laqueado → `lacquerColor`: blanco / crema / gris / grafito / negro |
 | 5 | Extras | `extras[]`: campana ($0, solo espacio en diseño), lavaplatos, especiero, basurero retráctil, vitrinas, iluminación, salpicadero (`muro-cristal`) |
@@ -30,11 +30,14 @@ El preview de cocina tiene **dos vistas** con toggle (Planta | Corte) en el asid
 cambia sola según el paso: Distribución → planta; Medidas y Extras → corte (el usuario puede
 alternar manualmente cuando quiera).
 
-**Corte** (`KitchenSectionPreview.tsx`, elevación frontal del tramo principal): muebles base
-con zócalo y tramo de cajonera (3 cajones a la izquierda), cubierta con volado, salpicadero
-si va el extra, muebles aéreos según posición con divisiones de puertas, vitrinas de vidrio,
-espacio de campana punteado (solo se reserva), línea LED dorada bajo mueble, y refrigerador
-fuera de la medida. Mismo escalado horizontal que la planta para que ambas vistas calcen.
+**Corte** (`KitchenSectionPreview.tsx`, elevación frontal del tramo principal): **a escala
+real** — una sola escala px/metro para horizontal y vertical, con cotas de medida tipo plano
+(base, tramo de cajonera y aéreos). Alturas reales: base 90 cm, cubierta 4 cm, aéreos de
+70 cm a 1,45 m del piso, cielo a 2,4 m, refrigerador 1,80 × 0,75 m fuera de la medida.
+Muestra zócalo, cajonera (a la izquierda), salpicadero, divisiones de puertas cada ~60 cm,
+vitrinas de vidrio, espacio de campana punteado (solo se reserva) y línea LED dorada. El
+ancho de los aéreos SIEMPRE es proporcional a sus metros; la posición solo los ancla
+(izquierda/centro/derecha).
 
 **Planta** — `KitchenPreview.tsx` dibuja una **vista en planta** en SVG que reacciona a la configuración:
 - Tramos de mueble según el layout: lineal, L, **paralela** (dos frentes enfrentados), U,

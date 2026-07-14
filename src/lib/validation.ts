@@ -17,7 +17,7 @@ const LAYOUT_IDS = ["lineal", "l", "paralela", "u", "peninsula", "isla"] as cons
 const COUNTERTOP_IDS = ["postformado", "porcelanica", "cuarzo", "ultracompacto"] as const satisfies readonly CountertopId[];
 const FRONT_IDS = ["melamina-mate", "melamina-madera", "laqueado"] as const satisfies readonly FrontId[];
 const LACQUER_IDS = ["blanco", "crema", "gris", "grafito", "negro"] as const satisfies readonly LacquerColorId[];
-const WALL_POSITION_IDS = ["izquierda", "derecha", "completo"] as const satisfies readonly WallPosition[];
+const WALL_POSITION_IDS = ["izquierda", "centro", "derecha"] as const satisfies readonly WallPosition[];
 
 export const leadSchema = z
   .object({

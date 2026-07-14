@@ -43,7 +43,7 @@ export const DEFAULT_CONFIG: KitchenConfig = {
   baseMeters: 3,
   drawerMeters: 1,
   wallMeters: 2,
-  wallPosition: "completo",
+  wallPosition: "centro",
   countertop: "cuarzo",
   front: "melamina-madera",
   extras: ["lavaplatos"],
