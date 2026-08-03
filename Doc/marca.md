@@ -46,5 +46,8 @@ Diferenciador: cocina montada y funcional en 40 días.
 
 ## Pendiente del cliente
 
-- Fotos reales de trabajos (hoy hay placeholders de marca en `public/images/`).
+- Fotos reales de closets y baños (hoy siguen con placeholders de marca en `public/images/`;
+  las de cocinas ya son reales, ver `Doc/imagenes-cocina/` y `public/images/kitchen-*.jpg`).
 - Datos de contacto reales (WhatsApp, teléfono, correo, redes) en `src/lib/site.ts`.
+- Logo: se descarta la marca VCH. Falta el archivo del logo antiguo de Venechi para
+  reemplazar `public/logo-venechi.png` / `public/logo-vch.png` (cliente lo está buscando).

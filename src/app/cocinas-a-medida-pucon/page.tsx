@@ -57,7 +57,7 @@ export default function CocinasPuconPage() {
         kicker="Pucón · La Araucanía"
         title="Cocinas a medida en Pucón, sin depender de Santiago"
         lede="Casas de lago, cabañas y departamentos de Pucón tienen algo en común: espacios que merecen más que muebles de catálogo. Fabricamos tu cocina a 25 minutos, en nuestro taller de Villarrica, y la montamos completa en 40 días."
-        image="/images/hero-kitchen.jpg"
+        image="/images/kitchen-island-b.jpg"
       />
 
       <section className="container-page py-20">

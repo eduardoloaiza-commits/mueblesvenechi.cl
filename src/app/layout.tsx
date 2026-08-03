@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: site.brand,
     locale: "es_CL",
     type: "website",
-    images: [{ url: absoluteUrl("/images/hero-kitchen.jpg"), width: 1200, height: 800 }],
+    images: [{ url: absoluteUrl("/images/kitchen-island-a.jpg"), width: 1200, height: 800 }],
   },
 };
 

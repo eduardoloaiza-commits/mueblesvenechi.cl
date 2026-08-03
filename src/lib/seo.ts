@@ -12,7 +12,7 @@ export function pageMetadata({
   title,
   description,
   path,
-  ogImage = "/images/hero-kitchen.jpg",
+  ogImage = "/images/kitchen-island-a.jpg",
 }: {
   title: string;
   description: string;
@@ -71,7 +71,7 @@ export function localBusinessJsonLd() {
     description: site.description,
     url: site.url,
     logo: absoluteUrl("/logo-venechi.png"),
-    image: absoluteUrl("/images/hero-kitchen.jpg"),
+    image: absoluteUrl("/images/kitchen-island-a.jpg"),
     email: site.email,
     address: {
       "@type": "PostalAddress",
@@ -151,7 +151,7 @@ export function articleJsonLd({
     datePublished,
     dateModified: dateModified ?? datePublished,
     mainEntityOfPage: absoluteUrl(path),
-    image: absoluteUrl("/images/hero-kitchen.jpg"),
+    image: absoluteUrl("/images/kitchen-island-a.jpg"),
     author: { "@type": "Organization", name: "Muebles Venechi", url: site.url },
     publisher: {
       "@type": "Organization",

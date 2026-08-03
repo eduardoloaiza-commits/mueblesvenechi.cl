@@ -118,7 +118,7 @@ export default function CocinasAMedidaPage() {
         kicker="Cocinas a medida"
         title="Cocinas a medida, fabricadas e instaladas en 40 días"
         lede="Diseñamos y fabricamos tu cocina en nuestro taller de Villarrica, con cubiertas de piedra cortadas en nuestra propia marmolería. Sin intermediarios, sin demoras y con un precio claro desde el primer día."
-        image="/images/hero-kitchen.jpg"
+        image="/images/kitchen-island-a.jpg"
       />
 
       {/* Qué significa "a medida" */}
@@ -150,7 +150,7 @@ export default function CocinasAMedidaPage() {
             </div>
           </div>
           <div className="relative aspect-[4/3] self-center overflow-hidden border border-white/15 shadow-[0_24px_50px_-30px_rgba(0,0,0,0.8)]">
-            <Image src="/images/hero-kitchen.jpg" alt="Cocina a medida fabricada por Muebles Venechi" fill className="object-cover" />
+            <Image src="/images/kitchen-c1.jpg" alt="Cocina a medida fabricada por Muebles Venechi" fill className="object-cover" />
           </div>
         </div>
       </section>

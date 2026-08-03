@@ -7,7 +7,7 @@ import { site, whatsappLink } from "@/lib/site";
 const TRUST = ["40 días", "Precio desde claro", "15 años de oficio", "Marmolería propia"];
 
 const LINEAS = [
-  { n: "01", t: "Cocinas", d: "Diseñadas a tu espacio real, con la cubierta de piedra que elijas.", img: "/images/hero-kitchen.jpg", href: "/cocinas-a-medida" },
+  { n: "01", t: "Cocinas", d: "Diseñadas a tu espacio real, con la cubierta de piedra que elijas.", img: "/images/kitchen-d1.jpg", href: "/cocinas-a-medida" },
   { n: "02", t: "Closets y vestidores", d: "Aprovechan cada rincón y ordenan de verdad.", img: "/images/marble-quartz.jpg", href: "/closets-y-vestidores" },
   { n: "03", t: "Baños", d: "Vanitorios y guardado a prueba de humedad.", img: "/images/marble-sintered.jpg", href: "/muebles-de-bano" },
   { n: "04", t: "Cubiertas de piedra", d: "Granito, cuarzo y piedra sinterizada, medidas e instaladas.", img: "/images/marble-granite.jpg", href: "/cubiertas-de-piedra" },
@@ -28,8 +28,8 @@ export default function Home() {
       <section className="relative">
         <div className="relative min-h-[86vh] w-full overflow-hidden">
           <Image
-            src="/images/hero-kitchen.jpg"
-            alt="Cocina a medida Muebles Venechi"
+            src="/images/kitchen-island-a.jpg"
+            alt="Cocina a medida Muebles Venechi, isla con cubierta de piedra"
             fill
             priority
             className="object-cover"
@@ -154,13 +154,13 @@ export default function Home() {
               <p className="kicker text-gold-600">Registro de obra</p>
               <h2 className="font-display mt-3 text-4xl font-medium">Piezas que hablan por nosotros</h2>
             </div>
-            <span className="kicker text-[#6b6255]">Próximamente con fotos reales de taller</span>
+            <span className="kicker text-[#6b6255]">Trabajos reales, sin retocar</span>
           </div>
           <div className="mt-12 grid grid-cols-2 gap-5 md:grid-cols-4">
-            <Frame className="col-span-2 row-span-2" ratio="aspect-square md:aspect-auto" src="/images/hero-kitchen.jpg" alt="Cocina terminada" />
-            <Frame ratio="aspect-square" src="/images/marble-quartz.jpg" alt="Cubierta de cuarzo blanco" />
-            <Frame ratio="aspect-square" src="/images/marble-granite.jpg" alt="Cubierta de granito" />
-            <Frame className="col-span-2" ratio="aspect-[2/1]" src="/images/marble-sintered.jpg" alt="Piedra sinterizada" />
+            <Frame className="col-span-2 row-span-2" ratio="aspect-square" src="/images/kitchen-b1.jpg" alt="Cocina con isla, tonos oscuros" />
+            <Frame ratio="aspect-square" src="/images/kitchen-c1.jpg" alt="Cocina con cubierta clara y techo de vigas a la vista" />
+            <Frame ratio="aspect-square" src="/images/kitchen-island-b.jpg" alt="Isla con cubierta de piedra veteada" />
+            <Frame className="col-span-2" ratio="aspect-[2/1]" src="/images/kitchen-d1.jpg" alt="Cocina en L verde salvia y blanco" />
           </div>
         </div>
       </section>

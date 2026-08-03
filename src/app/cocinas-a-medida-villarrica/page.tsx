@@ -58,7 +58,7 @@ export default function CocinasVillarricaPage() {
         kicker="Villarrica · La Araucanía"
         title="Cocinas a medida en Villarrica, hechas en Villarrica"
         lede="Nuestro taller y marmolería están en Isabel Riquelme 241. Tu cocina no viaja en camión desde Santiago: se fabrica a minutos de tu casa, por maestros que llevan años haciendo muebles para las casas del lago."
-        image="/images/hero-kitchen.jpg"
+        image="/images/kitchen-b1.jpg"
       />
 
       <section className="container-page py-20">
