@@ -67,10 +67,10 @@ export function localBusinessJsonLd() {
     "@type": "LocalBusiness",
     "@id": `${site.url}/#negocio`,
     name: "Muebles Venechi",
-    alternateName: "Espacio VCH",
+    alternateName: "Marmolería y Mueblería Venechi",
     description: site.description,
     url: site.url,
-    logo: absoluteUrl("/logo-venechi.png"),
+    logo: absoluteUrl("/logo-venechi-2.png"),
     image: absoluteUrl("/images/kitchen-island-a.jpg"),
     email: site.email,
     address: {
@@ -156,7 +156,7 @@ export function articleJsonLd({
     publisher: {
       "@type": "Organization",
       name: "Muebles Venechi",
-      logo: { "@type": "ImageObject", url: absoluteUrl("/logo-venechi.png") },
+      logo: { "@type": "ImageObject", url: absoluteUrl("/logo-venechi-2.png") },
     },
   };
 }

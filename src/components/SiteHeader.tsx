@@ -8,7 +8,7 @@ export function SiteHeader() {
       <div className="container-page flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/logo-venechi.png"
+            src="/logo-venechi-2.png"
             alt="Muebles Venechi"
             width={56}
             height={56}

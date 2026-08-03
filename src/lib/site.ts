@@ -3,7 +3,7 @@
 
 export const site = {
   brand: "Muebles Venechi",
-  brandFull: "Muebles Venechi · Espacio VCH",
+  brandFull: "Muebles Venechi · Marmolería y Mueblería Venechi",
   domain: "mueblesvenechi.cl",
   url: "https://mueblesvenechi.cl",
   tagline: "Tu cocina a medida, montada en 40 días",

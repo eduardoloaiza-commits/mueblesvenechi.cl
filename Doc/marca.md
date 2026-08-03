@@ -1,12 +1,21 @@
-# Marca — Espacio VCH (Venechi)
+# Marca — Muebles Venechi
 
-## Identidad (según brandbook oficial)
+## Identidad
 
-Marca visible: **ESPACIO VCH**. Marmolería y Mueblería Venechi es la razón detrás.
-Dominio: **mueblesvenechi.cl**. El sello circular VCH (en `public/logo-vch.png` y `Doc/logo-venechi.png`)
-es la marca principal.
+**Se descartó la marca "Espacio VCH"** (2026-08-03): el cliente pidió volver al logo
+original de Venechi, sin nada de VCH. Marca visible: **Venechi** (wordmark en script
+dorado + arco de estrellas, sello circular fondo oscuro). Dominio: **mueblesvenechi.cl**.
 
-Brandbook oficial en `Doc/Brandbook - Venechi.pdf` (5 páginas, "Manual Norma Gráfica").
+Logo activo: `public/logo-venechi-2.png` (fuente `Doc/Logo-venechi-circular-med.png`,
+cuadrado 550×550 con fondo transparente; se nombró `-2` para forzar la invalidación de
+caché de navegadores/CDN que ya tenían cacheado el logo VCH en la ruta `logo-venechi.png`).
+Se eliminaron del repo `public/logo-vch.png`, `Doc/logo-venechi.png` (versión anterior
+"Muebles VCH") y `Doc/logo-muebles-vch.svg` — quedan en el historial de git si hace falta
+recuperarlos.
+
+El brandbook oficial (`Doc/Brandbook - Venechi.pdf`, "Manual Norma Gráfica" de Espacio VCH)
+ya no aplica a la identidad visual, pero la paleta negro/dorado que definía coincide con la
+del logo antiguo, así que **el sistema de color y tipografía del sitio no cambia**.
 
 ## Paleta EXACTA del brandbook
 
@@ -35,8 +44,10 @@ emojis, blobs, simetría de plantilla).
 
 ## Maquetas de referencia
 
-Generadas en Google Stitch (proyecto "Espacio VCH — Web + Simulador de cocinas"). Screenshots en
-`Doc/mockups/stitch-home.png` y `Doc/mockups/stitch-configurador.png`. El código las sigue.
+Generadas en Google Stitch (proyecto "Espacio VCH — Web + Simulador de cocinas", nombre
+histórico del proyecto en Stitch). Screenshots en `Doc/mockups/stitch-home.png` y
+`Doc/mockups/stitch-configurador.png`. El código sigue esta dirección visual (oscuro
+editorial), solo cambió el logo.
 
 ## Negocio
 
@@ -49,5 +60,3 @@ Diferenciador: cocina montada y funcional en 40 días.
 - Fotos reales de closets y baños (hoy siguen con placeholders de marca en `public/images/`;
   las de cocinas ya son reales, ver `Doc/imagenes-cocina/` y `public/images/kitchen-*.jpg`).
 - Datos de contacto reales (WhatsApp, teléfono, correo, redes) en `src/lib/site.ts`.
-- Logo: se descarta la marca VCH. Falta el archivo del logo antiguo de Venechi para
-  reemplazar `public/logo-venechi.png` / `public/logo-vch.png` (cliente lo está buscando).
