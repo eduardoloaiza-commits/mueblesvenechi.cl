@@ -91,6 +91,37 @@ export async function createKommoLead(
   return { kommoLeadId, kommoContactId };
 }
 
+/**
+ * Actualiza un lead ya creado en Kommo (precio + tags) y agrega una nota con
+ * el resumen más reciente. Se usa cuando el cotizante avanza en el configurador
+ * después de la captura inicial, para no crear un lead duplicado por cada paso.
+ */
+export async function updateKommoLead(
+  kommoLeadId: number,
+  data: Pick<KommoLeadData, "price" | "summary" | "tags">
+): Promise<void> {
+  if (!isEnabled()) return;
+
+  const lead: Record<string, unknown> = { id: kommoLeadId };
+  if (typeof data.price === "number") lead.price = data.price;
+  if (data.tags?.length) lead.tags_to_add = data.tags.map((name) => ({ name }));
+
+  if (Object.keys(lead).length > 1) {
+    const res = await fetch(`${BASE_URL}/leads`, {
+      method: "PATCH",
+      headers: authHeaders(),
+      body: JSON.stringify([lead]),
+    });
+    if (!res.ok) {
+      throw new Error(`[Kommo] Update lead failed ${res.status}: ${await res.text()}`);
+    }
+  }
+
+  if (data.summary) {
+    await addLeadNote(kommoLeadId, data.summary).catch(() => {});
+  }
+}
+
 async function addLeadNote(kommoLeadId: number, text: string): Promise<void> {
   if (!isEnabled()) return;
   await fetch(`${BASE_URL}/leads/${kommoLeadId}/notes`, {

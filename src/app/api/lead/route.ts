@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { leadSchema } from "@/lib/validation";
-import { createKommoLead } from "@/lib/kommo";
+import { createKommoLead, updateKommoLead } from "@/lib/kommo";
 import {
   calcPrice,
   describeConfig,
@@ -78,45 +78,66 @@ export async function POST(request: Request) {
   // 1) Guardar en la base de datos (respaldo propio + analítica).
   // Best-effort: si la DB aún no está conectada (antes del deploy con Neon),
   // no rompemos el flujo del cliente; el error queda logueado.
-  let lead: { id: string } = { id: "sin-persistir" };
+  // Captura progresiva: si viene `leadId` (el cotizante ya pasó por el paso de
+  // datos antes) actualizamos ese registro en vez de crear uno nuevo por cada
+  // paso o reintento de abandono.
+  let lead: { id: string; kommoLeadId: number | null; kommoContactId: number | null } = {
+    id: "sin-persistir",
+    kommoLeadId: null,
+    kommoContactId: null,
+  };
   let persisted = false;
   if (process.env.DATABASE_URL) {
+    const fields = {
+      name: data.name,
+      phone: data.phone,
+      email: data.email || null,
+      comuna: data.comuna || null,
+      product,
+      projectType: data.projectType || null,
+      timeframe: data.timeframe || null,
+      layout: data.layout || null,
+      baseMeters: data.baseMeters ?? null,
+      drawerMeters: data.drawerMeters ?? null,
+      wallMeters: data.wallMeters ?? null,
+      wallPosition: data.wallPosition || null,
+      countertop: data.countertop || null,
+      closetType: data.closetType || null,
+      doorType: data.doorType || null,
+      heightOption: data.heightOption || null,
+      front: data.front || null,
+      lacquerColor: data.lacquerColor || null,
+      extras: data.extras ?? [],
+      priceFrom: priceFrom ?? undefined,
+      priceTo: priceTo ?? undefined,
+      source: data.source ?? "configurador",
+    };
     try {
-      lead = await db.lead.create({
-        data: {
-          name: data.name,
-          phone: data.phone,
-          email: data.email || null,
-          comuna: data.comuna || null,
-          product,
-          projectType: data.projectType || null,
-          timeframe: data.timeframe || null,
-          layout: data.layout || null,
-          baseMeters: data.baseMeters ?? null,
-          drawerMeters: data.drawerMeters ?? null,
-          wallMeters: data.wallMeters ?? null,
-          wallPosition: data.wallPosition || null,
-          countertop: data.countertop || null,
-          closetType: data.closetType || null,
-          doorType: data.doorType || null,
-          heightOption: data.heightOption || null,
-          front: data.front || null,
-          lacquerColor: data.lacquerColor || null,
-          extras: data.extras ?? [],
-          priceFrom: priceFrom ?? undefined,
-          priceTo: priceTo ?? undefined,
-          source: data.source ?? "configurador",
-        },
-      });
+      lead = data.leadId
+        ? await db.lead.update({ where: { id: data.leadId }, data: fields })
+        : await db.lead.create({ data: fields });
       persisted = true;
     } catch (err) {
-      console.error("[lead] DB write failed:", err);
+      // El leadId puede venir de un registro que ya no existe (reset de DB,
+      // por ejemplo): lo creamos igual para no perder la captura.
+      if (data.leadId) {
+        try {
+          lead = await db.lead.create({ data: fields });
+          persisted = true;
+        } catch (err2) {
+          console.error("[lead] DB write failed:", err2);
+        }
+      } else {
+        console.error("[lead] DB write failed:", err);
+      }
     }
   } else {
     console.warn("[lead] DATABASE_URL no configurada — lead no persistido:", data.name);
   }
 
   // 2) Enviar a Kommo (no bloquea la respuesta si falla o está deshabilitado).
+  // Si el lead ya tiene un kommoLeadId (captura previa), lo actualizamos en
+  // vez de crear un lead duplicado por cada paso del configurador.
   try {
     const tags = [
       data.source === "parcial" ? "cotizacion-parcial" : "web-configurador",
@@ -128,18 +149,29 @@ export async function POST(request: Request) {
           : "cocina-nueva",
     ].filter(Boolean) as string[];
 
-    const { kommoLeadId, kommoContactId } = await createKommoLead({
-      name: data.name,
-      phone: data.phone,
-      email: data.email || undefined,
-      price: priceFrom ?? undefined,
-      summary: summary
-        ? `${summary}\n\nContacto: ${data.phone}${data.comuna ? ` · ${data.comuna}` : ""}`
-        : undefined,
-      tags,
-    });
+    const summaryNote = summary
+      ? `${summary}\n\nContacto: ${data.phone}${data.comuna ? ` · ${data.comuna}` : ""}`
+      : undefined;
 
-    if (persisted && (kommoLeadId || kommoContactId)) {
+    let kommoLeadId = lead.kommoLeadId;
+    let kommoContactId = lead.kommoContactId;
+
+    if (kommoLeadId) {
+      await updateKommoLead(kommoLeadId, { price: priceFrom ?? undefined, summary: summaryNote, tags });
+    } else {
+      const created = await createKommoLead({
+        name: data.name,
+        phone: data.phone,
+        email: data.email || undefined,
+        price: priceFrom ?? undefined,
+        summary: summaryNote,
+        tags,
+      });
+      kommoLeadId = created.kommoLeadId;
+      kommoContactId = created.kommoContactId;
+    }
+
+    if (persisted && (kommoLeadId !== lead.kommoLeadId || kommoContactId !== lead.kommoContactId)) {
       await db.lead.update({
         where: { id: lead.id },
         data: { kommoLeadId, kommoContactId },

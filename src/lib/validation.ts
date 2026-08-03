@@ -21,6 +21,10 @@ const WALL_POSITION_IDS = ["izquierda", "centro", "derecha"] as const satisfies 
 
 export const leadSchema = z
   .object({
+    // Id del lead ya creado (captura progresiva): si viene, se actualiza en vez
+    // de crear uno nuevo, para no duplicar al avanzar por el configurador.
+    leadId: z.string().trim().max(60).optional(),
+
     // Contacto (obligatorio)
     name: z.string().trim().min(2, "Ingresa tu nombre").max(120),
     phone: z

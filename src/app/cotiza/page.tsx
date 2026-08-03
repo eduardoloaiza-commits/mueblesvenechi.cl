@@ -23,8 +23,8 @@ export default function CotizaPage() {
             Arma tu cocina o tu closet y conoce el precio
           </h1>
           <p className="mt-3 max-w-2xl text-muted">
-            Toma un par de minutos. A medida que eliges, el diseño y el valor estimado se
-            actualizan en vivo. Solo pedimos tus datos al final.
+            Toma un par de minutos. Partimos con tus datos de contacto y luego el diseño y el
+            valor estimado se actualizan en vivo a medida que eliges.
           </p>
         </div>
       </div>

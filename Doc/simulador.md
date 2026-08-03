@@ -9,15 +9,18 @@ Capturar la mayor cantidad de inputs del cotizante de forma autónoma y entregar
 
 ## Flujo (7 pasos)
 
+"Tus datos" va **primero** (no al final): así queda un lead capturado apenas el
+cotizante entrega su contacto, aunque abandone el resto del configurador.
+
 | # | Paso | Captura |
 |---|---|---|
-| 1 | Distribución | `layout`: lineal / L / paralela / U / península / isla |
-| 2 | Medidas | `baseMeters` (mín 2 m), `drawerMeters` (tramo con cajonera, 0..base), `wallMeters` (0 o ≥0,5 m) + `wallPosition` (izquierda/centro/derecha) |
-| 3 | Cubierta | `countertop`: postformado / porcelánica / cuarzo / ultracompacto |
-| 4 | Frentes | `front`: melamina lisa / símil madera / laqueado. Si laqueado → `lacquerColor`: blanco / crema / gris / grafito / negro |
-| 5 | Extras | `extras[]`: campana ($0, solo espacio en diseño), lavaplatos, especiero, basurero retráctil, vitrinas, iluminación, salpicadero (`muro-cristal`) |
-| 6 | Proyecto | `projectType`: nueva / remodelación · `timeframe` |
-| 7 | Datos | nombre, teléfono/WhatsApp, correo (opcional), comuna |
+| 1 | Tus datos | nombre, teléfono/WhatsApp, correo (opcional), comuna |
+| 2 | Distribución | `layout`: lineal / L / paralela / U / península / isla |
+| 3 | Medidas | `baseMeters` (mín 2 m), `drawerMeters` (tramo con cajonera, 0..base), `wallMeters` (0 o ≥0,5 m) + `wallPosition` (izquierda/centro/derecha) |
+| 4 | Cubierta | `countertop`: postformado / porcelánica / cuarzo / ultracompacto |
+| 5 | Frentes | `front`: melamina lisa / símil madera / laqueado. Si laqueado → `lacquerColor`: blanco / crema / gris / grafito / negro |
+| 6 | Extras | `extras[]`: campana ($0, solo espacio en diseño), lavaplatos, especiero, basurero retráctil, vitrinas, iluminación, salpicadero (`muro-cristal`) |
+| 7 | Proyecto | `projectType`: nueva / remodelación · `timeframe` (también dispara "Recibir mi cotización") |
 
 Reglas de oferta (reunión cliente 2026-07): NO se ofrecen electrodomésticos ni griferías
 (el lavaplatos va solo). Los cajones con riel telescópico van **incluidos** en la base y se
@@ -27,8 +30,8 @@ antiguo cubremuro (el id `muro-cristal` se mantiene por compatibilidad de datos)
 ## Preview en vivo
 
 El preview de cocina tiene **dos vistas** con toggle (Planta | Corte) en el aside. La vista
-cambia sola según el paso: Distribución → planta; Medidas y Extras → corte (el usuario puede
-alternar manualmente cuando quiera).
+cambia sola según el paso: Distribución (paso 2) → planta; Medidas y Extras (pasos 3 y 6) →
+corte (el usuario puede alternar manualmente cuando quiera).
 
 **Corte** (`KitchenSectionPreview.tsx`, elevación frontal del tramo principal): **a escala
 real** — una sola escala px/metro para horizontal y vertical, con cotas de medida tipo plano
@@ -57,17 +60,30 @@ Es esquemático (no a escala), pensado para dar feedback visual inmediato, no pa
 Columna sticky con `calcPrice(config)` recalculado en cada cambio (`useMemo`). Muestra
 "**desde $X + IVA**" y disclaimer de valores netos. Ver `Doc/precios.md`.
 
-## Envío
+## Envío y captura progresiva
 
-`POST /api/lead` con la config + contacto. El servidor:
+Apenas se completa el paso 1 ("Tus datos") con nombre + WhatsApp válidos, el cliente llama
+`savePartial()`: un `POST /api/lead` con `source: "parcial"` que no bloquea el avance
+(best-effort, igual que el resto de la integración). La respuesta trae el `id` del lead, que
+se guarda en estado (`leadId`) y viaja en todos los envíos siguientes.
+
+Si el cotizante cierra la pestaña sin terminar, el `pagehide` listener manda un
+`sendBeacon` con la config más reciente (mismo `leadId`, sigue siendo `source: "parcial"`).
+Si termina el flujo, `submit()` manda `source: "configurador"` con el mismo `leadId`.
+
+`POST /api/lead` con la config + contacto (+ `leadId` opcional). El servidor:
 1. Valida con `leadSchema` (zod). Contacto obligatorio; config opcional (captura progresiva).
    Mínimos de cocina (base ≥2, aéreo 0 o ≥0,5, cajonera ≤ base) en `superRefine` — solo
    aplican a cocina porque `baseMeters` se reutiliza para el frente del closet.
 2. Filtra ids de extras desconocidos (`isExtraId` / `isClosetExtraId`) — bundles antiguos
    cacheados aún pueden mandar "cajones"/"organizadores".
 3. **Recalcula el precio** (nunca confía en el cliente).
-4. Guarda en Neon (best-effort).
-5. Crea lead + contacto en Kommo con nota de resumen — la nota dice "+ IVA" (best-effort / NO-OP sin token).
+4. Guarda en Neon: si viene `leadId`, hace `update` sobre ese registro (upsert con fallback a
+   `create` si el id ya no existe); si no, `create`. Así un mismo cotizante nunca genera más
+   de un lead, sin importar cuántas veces avance o abandone.
+5. Sincroniza con Kommo: si el lead ya tiene `kommoLeadId` (captura previa), actualiza ese
+   lead (`updateKommoLead`: precio + tags + nota) en vez de crear uno nuevo; si no, lo crea
+   (`createKommoLead`). Best-effort / NO-OP sin token.
 6. Devuelve `priceFromLabel` para la pantalla de resultado.
 
 ## Pantalla de resultado y /gracias
@@ -83,7 +99,6 @@ Ambas usan `src/components/ThankYouPanel.tsx` (sin hooks, sirve en client y RSC)
 
 ## Ideas para siguientes iteraciones
 
-- Captura progresiva real: enviar el contacto apenas se ingresa (paso 7 → parcial) por si abandona.
 - Subir foto del espacio actual (upload) para adjuntar a Kommo.
 - Guardar/retomar cotización por link.
 - Custom fields específicos en Kommo (mapear layout/materiales por `field_id`).
@@ -93,10 +108,10 @@ Ambas usan `src/components/ThankYouPanel.tsx` (sin hooks, sirve en client y RSC)
 El configurador tiene un selector Cocina | Closet sobre el wizard. El deep-link
 `/cotiza?producto=closet` (usado por la página `/closets-y-vestidores`) preselecciona closet.
 
-Flujo closet (7 pasos): Tipo (`closetType`) → Medidas (`baseMeters` = metros de frente +
+Flujo closet (7 pasos): Datos → Tipo (`closetType`) → Medidas (`baseMeters` = metros de frente +
 `heightOption`) → Puertas (`doorType`) → Terminación (`front`, compartido con cocinas; si
 laqueado → `lacquerColor` con la misma gama de 5 colores) → Interior (`extras[]` de closet) →
-Proyecto (`timeframe`) → Datos.
+Proyecto (`timeframe`).
 
 Preview propio en elevación frontal (`ClosetPreview.tsx`): muestra puertas según sistema o el
 interior (barra, ropa, cajonera, zapatera) cuando va sin puertas; el color de frentes respeta

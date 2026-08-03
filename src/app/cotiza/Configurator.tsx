@@ -53,9 +53,11 @@ interface Contact {
   timeframe: string;
 }
 
+// "Tus datos" va primero: así capturamos el contacto de quienes abandonan el
+// configurador antes de terminarlo (captura progresiva real, no solo al cierre).
 const STEPS: Record<Product, readonly string[]> = {
-  cocina: ["Distribución", "Medidas", "Cubierta", "Frentes", "Extras", "Proyecto", "Tus datos"],
-  closet: ["Tipo", "Medidas", "Puertas", "Terminación", "Interior", "Proyecto", "Tus datos"],
+  cocina: ["Tus datos", "Distribución", "Medidas", "Cubierta", "Frentes", "Extras", "Proyecto"],
+  closet: ["Tus datos", "Tipo", "Medidas", "Puertas", "Terminación", "Interior", "Proyecto"],
 };
 
 export function Configurator() {
@@ -76,14 +78,18 @@ export function Configurator() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<null | { priceFromLabel: string | null }>(null);
+  // Id del lead ya creado en la captura progresiva (paso "Tus datos"). Si existe,
+  // los envíos posteriores actualizan ese registro en vez de crear uno nuevo.
+  const [leadId, setLeadId] = useState<string | null>(null);
+  const savingContactRef = useRef(false);
   // Vista del preview de cocina: planta (distribución) o corte (aéreos y detalles).
   const [kitchenView, setKitchenView] = useState<"planta" | "corte">("planta");
 
   // Cambia la vista sola según el paso: distribución se entiende en planta,
   // medidas (aéreos/cajonera) y extras se entienden mejor en corte.
   useEffect(() => {
-    if (step === 0) setKitchenView("planta");
-    if (step === 1 || step === 4) setKitchenView("corte");
+    if (step === 1) setKitchenView("planta");
+    if (step === 2 || step === 5) setKitchenView("corte");
   }, [step]);
 
   const steps = STEPS[product];
@@ -119,6 +125,7 @@ export function Configurator() {
   const buildPayload = (source: "configurador" | "parcial") => ({
     ...contact,
     email: contact.email || undefined,
+    leadId: leadId || undefined,
     product,
     ...(product === "closet"
       ? {
@@ -147,19 +154,19 @@ export function Configurator() {
     source,
   });
 
-  // Captura progresiva: si el usuario deja un teléfono válido y abandona sin
-  // enviar, mandamos el lead parcial con sendBeacon para no perderlo.
+  // Captura progresiva: apenas completa "Tus datos" (paso 0) guardamos el lead
+  // parcial de inmediato (savePartial), así quedan registrados aunque abandonen
+  // el resto del configurador. Si vuelven a cambiar algo y cierran sin terminar,
+  // el beacon de pagehide actualiza ese mismo lead con la config más reciente.
   const doneRef = useRef(false);
-  const sentPartialRef = useRef(false);
   useEffect(() => {
     doneRef.current = done !== null;
   }, [done]);
 
   useEffect(() => {
     const handler = () => {
-      if (doneRef.current || sentPartialRef.current) return;
+      if (doneRef.current) return;
       if (contact.name.trim().length >= 2 && contact.phone.trim().length >= 8) {
-        sentPartialRef.current = true;
         const blob = new Blob([JSON.stringify(buildPayload("parcial"))], {
           type: "application/json",
         });
@@ -169,7 +176,42 @@ export function Configurator() {
     window.addEventListener("pagehide", handler);
     return () => window.removeEventListener("pagehide", handler);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contact, config, closet, product, price]);
+  }, [contact, config, closet, product, price, leadId]);
+
+  // Guarda (o actualiza) el lead con lo que se tenga hasta el momento. Se llama
+  // apenas se completa el paso "Tus datos" y no bloquea el avance: es
+  // best-effort, igual que el resto de la integración con Kommo/DB.
+  async function savePartial() {
+    if (savingContactRef.current) return;
+    savingContactRef.current = true;
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildPayload("parcial")),
+      });
+      const data = await res.json();
+      if (data?.ok && data?.id && data.id !== "sin-persistir") {
+        setLeadId(data.id);
+      }
+    } catch {
+      // best-effort: si falla, seguimos con el flujo igual.
+    } finally {
+      savingContactRef.current = false;
+    }
+  }
+
+  function goNext() {
+    if (step === 0) {
+      if (!canSubmit) {
+        setError("Necesitamos tu nombre y un WhatsApp para enviarte la cotización.");
+        return;
+      }
+      setError(null);
+      savePartial();
+    }
+    setStep((s) => s + 1);
+  }
 
   const waMessage = () => {
     const detail = product === "closet" ? describeClosetConfig(closet) : describeConfig(config);
@@ -184,7 +226,6 @@ export function Configurator() {
       return;
     }
     setSubmitting(true);
-    sentPartialRef.current = true; // evita duplicar con el beacon
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
@@ -196,7 +237,6 @@ export function Configurator() {
       setDone({ priceFromLabel: data.priceFromLabel ?? formatCLP(price.from) });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Ocurrió un error. Intenta de nuevo.");
-      sentPartialRef.current = false;
     } finally {
       setSubmitting(false);
     }
@@ -289,7 +329,7 @@ export function Configurator() {
               {submitting ? "Enviando..." : "Recibir mi cotización"}
             </button>
           ) : (
-            <button onClick={() => setStep((s) => s + 1)} className="btn-primary">
+            <button onClick={goNext} className="btn-primary">
               Continuar
             </button>
           )}
@@ -386,7 +426,7 @@ export function Configurator() {
                 {submitting ? "..." : "Recibir"}
               </button>
             ) : (
-              <button onClick={() => setStep((s) => s + 1)} className="btn-primary !px-5 !py-2.5 text-sm">
+              <button onClick={goNext} className="btn-primary !px-5 !py-2.5 text-sm">
                 Continuar
               </button>
             )}
@@ -418,7 +458,9 @@ function KitchenSteps({
 }) {
   return (
     <>
-      {step === 0 && (
+      {step === 0 && <ContactStep contact={contact} setContact={setContact} error={error} />}
+
+      {step === 1 && (
         <StepGrid title="¿Cómo es la forma de tu cocina?" hint="Elige la distribución que más se parezca a tu espacio.">
           {LAYOUTS.map((l) => (
             <Card key={l.id} active={config.layout === l.id} title={l.label} desc={l.desc} onClick={() => set({ layout: l.id })} />
@@ -426,7 +468,7 @@ function KitchenSteps({
         </StepGrid>
       )}
 
-      {step === 1 && (
+      {step === 2 && (
         <div>
           <StepHead title="¿Cuántos metros de mueble necesitas?" hint="Aproximado. Lo afinamos con la visita de medición." />
           <div className="mt-8 space-y-5">
@@ -479,7 +521,7 @@ function KitchenSteps({
         </div>
       )}
 
-      {step === 2 && (
+      {step === 3 && (
         <StepGrid title="Elige tu cubierta" hint="El material de la superficie de trabajo. Nuestra marmolería la fabrica e instala." single>
           {COUNTERTOPS.map((c) => (
             <Swatch key={c.id} active={config.countertop === c.id} color={c.swatch} title={c.label} desc={c.desc} onClick={() => set({ countertop: c.id })} />
@@ -487,7 +529,7 @@ function KitchenSteps({
         </StepGrid>
       )}
 
-      {step === 3 && (
+      {step === 4 && (
         <div>
           <StepGrid title="Elige la terminación de los frentes" hint="Las puertas y cajones que se ven por fuera." single>
             {FRONTS.map((f) => (
@@ -503,7 +545,7 @@ function KitchenSteps({
         </div>
       )}
 
-      {step === 4 && (
+      {step === 5 && (
         <div>
           <StepHead title="¿Le sumamos algún extra?" hint="Puedes elegir varios o ninguno." />
           <p className="mt-4 text-sm text-muted">
@@ -518,7 +560,7 @@ function KitchenSteps({
         </div>
       )}
 
-      {step === 5 && (
+      {step === 6 && (
         <div>
           <StepHead title="Sobre tu proyecto" hint="Nos ayuda a preparar mejor la reunión." />
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -529,8 +571,6 @@ function KitchenSteps({
           <TimeframePicker contact={contact} setContact={setContact} />
         </div>
       )}
-
-      {step === 6 && <ContactStep contact={contact} setContact={setContact} error={error} />}
     </>
   );
 }
@@ -554,7 +594,9 @@ function ClosetSteps({
 }) {
   return (
     <>
-      {step === 0 && (
+      {step === 0 && <ContactStep contact={contact} setContact={setContact} error={error} />}
+
+      {step === 1 && (
         <StepGrid title="¿Qué tipo de closet necesitas?" hint="Elige el que más se parezca a tu espacio.">
           {CLOSET_TYPES.map((t) => (
             <Card key={t.id} active={closet.closetType === t.id} title={t.label} desc={t.desc} onClick={() => setC({ closetType: t.id })} />
@@ -562,7 +604,7 @@ function ClosetSteps({
         </StepGrid>
       )}
 
-      {step === 1 && (
+      {step === 2 && (
         <div>
           <StepHead title="¿Cuánto mide el frente del closet?" hint="El ancho total de la pared que ocupará. Aproximado, lo afinamos midiendo." />
           <div className="mt-8 space-y-5">
@@ -579,7 +621,7 @@ function ClosetSteps({
         </div>
       )}
 
-      {step === 2 && (
+      {step === 3 && (
         <StepGrid title="¿Con qué puertas?" hint="Las correderas no ocupan espacio al abrir; sin puertas es el más económico." single>
           {DOOR_TYPES.map((d) => (
             <Card key={d.id} active={closet.doors === d.id} title={d.label} desc={d.desc} onClick={() => setC({ doors: d.id })} />
@@ -587,7 +629,7 @@ function ClosetSteps({
         </StepGrid>
       )}
 
-      {step === 3 && (
+      {step === 4 && (
         <div>
           <StepGrid title="Elige la terminación" hint="Lo que se ve por fuera: puertas y costados vistos." single>
             {FRONTS.map((f) => (
@@ -603,7 +645,7 @@ function ClosetSteps({
         </div>
       )}
 
-      {step === 4 && (
+      {step === 5 && (
         <div>
           <StepHead title="Arma el interior" hint="El diseño interior es la mitad del valor de un buen closet. Elige lo que usas." />
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -614,14 +656,12 @@ function ClosetSteps({
         </div>
       )}
 
-      {step === 5 && (
+      {step === 6 && (
         <div>
           <StepHead title="Sobre tu proyecto" hint="Nos ayuda a preparar mejor la reunión." />
           <TimeframePicker contact={contact} setContact={setContact} />
         </div>
       )}
-
-      {step === 6 && <ContactStep contact={contact} setContact={setContact} error={error} />}
     </>
   );
 }
@@ -666,7 +706,7 @@ function ContactStep({
 }) {
   return (
     <div>
-      <StepHead title="¿A dónde te enviamos la cotización?" hint="Con esto te contactamos para afinar los detalles. Solo nombre y WhatsApp son obligatorios." />
+      <StepHead title="Partamos por tus datos" hint="Así guardamos tu avance si te interrumpes y te enviamos la cotización apenas la termines. Solo nombre y WhatsApp son obligatorios." />
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <Field label="Nombre y apellido" required>
           <input className="input" value={contact.name} onChange={(e) => setContact((c) => ({ ...c, name: e.target.value }))} placeholder="Ej: María Paredes" />
