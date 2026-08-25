@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { site, whatsappLink } from "@/lib/site";
 
-const TRUST = ["40 días", "Precio desde claro", "15 años de oficio", "Marmolería propia"];
+const TRUST = ["40 días", "Precio desde", "15 años de oficio", "Marmolería propia"];
 
 const LINEAS = [
   { n: "01", t: "Cocinas", d: "Diseñadas a tu espacio real, con la cubierta de piedra que elijas.", img: "/images/kitchen-d1.jpg", href: "/cocinas-a-medida" },
@@ -42,7 +42,7 @@ export default function Home() {
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
               Diseño a medida, pensado para tu espacio real. Transformamos placas de piedra natural y
-              maderas nobles en cocinas de alto estándar, sin demoras ni sobrecostos ocultos.
+              tableros modernos en cocinas de alto estándar, sin demoras ni sobrecostos ocultos.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-5">
               <Link href="/cotiza" className="btn-primary">
@@ -62,7 +62,10 @@ export default function Home() {
         <div className="container-page grid grid-cols-2 gap-y-6 py-8 md:grid-cols-4">
           {TRUST.map((t) => (
             <div key={t} className="border-line md:border-l md:pl-6 [&:first-child]:md:border-l-0 [&:first-child]:md:pl-0">
-              <span className="kicker text-foreground">{t}</span>
+              <span className="kicker text-foreground">
+                {t}
+                {t === "Precio desde" && <span className="hidden md:inline"> claro</span>}
+              </span>
             </div>
           ))}
         </div>
