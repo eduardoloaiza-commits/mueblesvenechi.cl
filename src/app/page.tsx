@@ -41,7 +41,7 @@ export default function Home() {
               Tu cocina a medida, montada en {site.deliveryDays} días.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-              Diseño a medida y ejecución milimétrica. Transformamos placas de piedra natural y
+              Diseño a medida, pensado para tu espacio real. Transformamos placas de piedra natural y
               maderas nobles en cocinas de alto estándar, sin demoras ni sobrecostos ocultos.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-5">
