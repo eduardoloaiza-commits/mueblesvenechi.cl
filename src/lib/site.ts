@@ -24,8 +24,8 @@ export const site = {
   bookingUrl: "" as string,
 
   // Contacto — reemplazar por los datos reales del negocio.
-  whatsappNumber: "56900000000", // formato wa.me, sin '+' ni espacios
-  phoneDisplay: "+56 9 0000 0000",
+  whatsappNumber: "56931800161", // formato wa.me, sin '+' ni espacios
+  phoneDisplay: "+56 9 3180 0161",
   email: "contacto@mueblesvenechi.cl",
   instagram: "https://instagram.com/mueblesvenechi",
   facebook: "https://facebook.com/marmoleriavenechi",
