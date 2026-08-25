@@ -88,6 +88,12 @@ KOMMO_PIPELINE_ID    id del pipeline web
 KOMMO_STATUS_ID      id de la etapa inicial (debe ser type 0, no "Leads Entrantes")
 ```
 
+## Analítica
+
+Google Analytics 4 integrado vía `@next/third-parties/google` (`GoogleAnalytics` en
+`src/app/layout.tsx`), condicionado a `NEXT_PUBLIC_GA_ID` (ver `.env.example`). Si la
+variable no está definida, GA simplemente no se carga. ID real: `G-BXWLXQPK6N`.
+
 ## Base de datos
 
 `DATABASE_URL` (Neon). Si no está configurada, `/api/lead` responde ok pero **no persiste** (loguea

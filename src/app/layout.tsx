@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { absoluteUrl, localBusinessJsonLd } from "@/lib/seo";
@@ -49,6 +50,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <JsonLd data={localBusinessJsonLd()} />
         {children}
+        {process.env.NEXT_PUBLIC_GA_ID ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        ) : null}
       </body>
     </html>
   );
