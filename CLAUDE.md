@@ -67,12 +67,25 @@ Patrón reutilizado de `micasaconsubsidio.cl`. Crea lead + contacto con `POST /a
 y adjunta una nota con el resumen de la cotización. Es **NO-OP** si faltan las variables de entorno,
 así el formulario nunca se rompe.
 
+**CONECTADO en real (2026-08-21).** Cuenta `venechi.kommo.com`, pipeline **"test"** (`14325655`,
+temporal — pendiente que el cliente defina el pipeline definitivo), etapa inicial **"Contacto
+inicial"** (`110640251`). Ojo: la etapa "Leads Entrantes" (`110640247`, type 1 = "no clasificados")
+**no sirve como `KOMMO_STATUS_ID`** — Kommo la ignora en `POST /leads/complex` y el lead cae en el
+pipeline por defecto de la cuenta en vez del pipeline elegido; hay que usar una etapa editable
+normal (type 0). Variables cargadas en `.env.local` y en Vercel (Production/Preview/Development).
+Verificado con lead real de punta a punta contra `mueblesvenechicl.vercel.app` → aparece en Kommo
+con contacto (teléfono/email), precio, tags y nota con el resumen de la cotización.
+
+Nota CLI: `vercel env add NOMBRE preview --value X --yes` falla con "git_branch_required" aunque
+la doc diga que se puede omitir la rama; el fix es pasar explícitamente `""` como tercer argumento
+(`vercel env add NOMBRE preview "" --value X --yes`) para que aplique a todas las ramas Preview.
+
 Variables (ver `.env.example`):
 ```
 KOMMO_BEARER_TOKEN   JWT de larga duración (Settings → Integraciones → API)
 KOMMO_BASE_URL       https://<subdominio>.kommo.com/api/v4
 KOMMO_PIPELINE_ID    id del pipeline web
-KOMMO_STATUS_ID      id de la etapa inicial
+KOMMO_STATUS_ID      id de la etapa inicial (debe ser type 0, no "Leads Entrantes")
 ```
 
 ## Base de datos
@@ -105,9 +118,8 @@ retráctil, vitrinas), precios reales netos "+ IVA", y `ThankYouPanel` compartid
 visita técnica $50.000 y agendamiento online (`site.bookingUrl`).
 
 Pendiente (requiere datos del negocio):
-- Conectar Neon (`DATABASE_URL`) y correr `npm run db:push` (el schema ya incluye
-  `drawerMeters`, `wallPosition`, `lacquerColor`).
-- Conectar cuenta real de Kommo (token + pipeline/status ids).
+- Neon y Kommo YA conectados (ver secciones arriba). Falta que el cliente confirme el pipeline
+  definitivo de Kommo (hoy usa el pipeline "test" `14325655` como provisorio).
 - Validar multiplicadores de frente y precios de extras/isla/closets (`Doc/precios.md`).
 - URL del appointment schedule de Google Calendar → `site.bookingUrl`.
 - Assets reales: logo, fotos de trabajos, datos de contacto en `src/lib/site.ts`.
