@@ -81,11 +81,11 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "¿Trabajan fuera de Villarrica?",
-    a: "Sí. Instalamos en Villarrica, Pucón y Lican Ray. Si tu proyecto está en otra comuna de la zona lacustre, escríbenos por WhatsApp y lo evaluamos.",
+    a: "Sí. Abarcamos Villarrica, Pucón, Curarrehue, Gorbea, Pitrufquén, Freire, Temuco, Loncoche, Lanco, Panguipulli, Valdivia y todos sus alrededores. Si tu proyecto está en otra ubicación, escríbenos por WhatsApp y lo evaluamos igual.",
   },
   {
     q: "¿Qué incluye el precio?",
-    a: "Los muebles base y murales fabricados a la medida exacta de tu espacio, la cubierta que elijas cortada y pulida en nuestra marmolería, los herrajes, el flete y la instalación completa. No trabajamos con costos ocultos: lo que cotizas es lo que pagas.",
+    a: "Los muebles base y murales fabricados a la medida exacta de tu espacio, la cubierta que elijas cortada y pulida en nuestra marmolería, los herrajes, el flete y la instalación completa. No trabajamos con costos ocultos: lo que cotizas es lo que pagas. Además, tu proyecto incluye asesoría de un experto, acompañamiento en todo el proceso y renders 3D para que tengas la certeza de que lo que se diseñó y cotizó es exactamente lo que llegará a la instalación.",
   },
   {
     q: "¿Puedo remodelar mi cocina actual o solo hacen cocinas nuevas?",
@@ -93,7 +93,7 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "¿Cómo parto? ¿Tengo que saber las medidas exactas?",
-    a: "No. Con medidas aproximadas de tus paredes basta para obtener una estimación online. Antes de fabricar, vamos a tu casa y medimos todo con precisión. Esa medición es la que manda.",
+    a: "No. Con medidas aproximadas de tus paredes basta para obtener una estimación online. Antes de fabricar, vamos a tu casa y medimos todo con precisión.",
   },
 ];
 

@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { site, whatsappLink } from "@/lib/site";
 
-const TRUST = ["40 días", "Precio desde", "15 años de oficio", "Marmolería propia"];
+const TRUST = ["Sin intermediarios", "Entrega en 40 días", "15 años de oficio", "Marmolería propia"];
 
 const LINEAS = [
   { n: "01", t: "Cocinas", d: "Diseñadas a tu espacio real, con la cubierta de piedra que elijas.", img: "/images/kitchen-d1.jpg", href: "/cocinas-a-medida" },
@@ -62,10 +62,7 @@ export default function Home() {
         <div className="container-page grid grid-cols-2 gap-y-6 py-8 md:grid-cols-4">
           {TRUST.map((t) => (
             <div key={t} className="border-line md:border-l md:pl-6 [&:first-child]:md:border-l-0 [&:first-child]:md:pl-0">
-              <span className="kicker text-foreground">
-                {t}
-                {t === "Precio desde" && <span className="hidden md:inline"> claro</span>}
-              </span>
+              <span className="kicker text-foreground">{t}</span>
             </div>
           ))}
         </div>
