@@ -9,7 +9,7 @@ const TRUST = ["Sin intermediarios", "Entrega en 40 días", "15 años de oficio"
 const LINEAS = [
   { n: "01", t: "Cocinas", d: "Diseñadas a tu espacio real, con la cubierta de piedra que elijas.", img: "/images/kitchen-d1.jpg", href: "/cocinas-a-medida" },
   { n: "02", t: "Closets y vestidores", d: "Aprovechan cada rincón y ordenan de verdad.", img: "/images/marble-quartz.jpg", href: "/closets-y-vestidores" },
-  { n: "03", t: "Baños", d: "Vanitorios y guardado a prueba de humedad.", img: "/images/marble-sintered.jpg", href: "/muebles-de-bano" },
+  { n: "03", t: "Baños", d: "Vanitorios con cubierta de piedra y guardado a prueba de humedad.", img: "/images/marble-sintered.jpg", href: "/muebles-de-bano" },
   { n: "04", t: "Cubiertas de piedra", d: "Granito, cuarzo y piedra sinterizada, medidas e instaladas.", img: "/images/marble-granite.jpg", href: "/cubiertas-de-piedra" },
 ];
 
