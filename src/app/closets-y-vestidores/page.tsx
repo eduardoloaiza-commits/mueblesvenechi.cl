@@ -54,7 +54,7 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "¿Hacen closets en Pucón y Lican Ray?",
-    a: "Sí, instalamos en toda la zona lacustre: Villarrica, Pucón y Lican Ray. Muchos de nuestros closets van en segundas viviendas y casas de arriendo turístico de la zona.",
+    a: "Sí, abarcamos Villarrica, Pucón, Curarrehue, Gorbea, Pitrufquén, Freire, Temuco, Loncoche, Lanco, Panguipulli, Valdivia y todos sus alrededores. Muchos de nuestros closets van en segundas viviendas y casas de arriendo turístico de la zona. Si tu proyecto está en otra ubicación, escríbenos por WhatsApp y lo evaluamos igual.",
   },
 ];
 

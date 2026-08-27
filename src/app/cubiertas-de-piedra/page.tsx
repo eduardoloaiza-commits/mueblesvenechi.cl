@@ -32,7 +32,7 @@ const PIEDRAS = [
     img: "/images/marble-quartz.jpg",
     resumen: "Superficie uniforme, no porosa e higiénica.",
     detalle:
-      "Piedra de ingeniería: color parejo, sin poros, no necesita sellado y no absorbe manchas de vino, café o limón. Es el material más pedido en cocinas modernas. Conviene proteger del calor directo.",
+      "Piedra de ingeniería de color y tono homogéneo. Al ser una superficie no porosa, es altamente higiénica, libre de bacterias y no requiere sellado ni mantenimientos especiales. Es la opción más pedida en cocinas modernas por su acabado impecable y fácil limpieza.",
     ideal: "Cocinas claras y minimalistas, familias con niños.",
   },
   {
